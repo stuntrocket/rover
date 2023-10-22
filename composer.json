@@ -34,10 +34,10 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "php setup.php"
+            "Rover\\ScriptHandler::createSymlink"
         ],
         "post-update-cmd": [
-            "php setup.php"
+            "Rover\\ScriptHandler::createSymlink"
         ]
     }
 }
