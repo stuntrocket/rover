@@ -10,7 +10,7 @@ class ScriptHandler
     public static function createSymlink()
     {
         try {
-            $roboSrc = __DIR__ . '/../vendor/consolidation/robo/bin/robo';
+            $roboSrc = __DIR__ . '/../vendor/consolidation/robo/robo';
             $roboDest = __DIR__ . '/../vendor/bin/robo';
 
             if (file_exists($roboDest)) {
