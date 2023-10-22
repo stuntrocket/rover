@@ -31,5 +31,13 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php setup.php"
+        ],
+        "post-update-cmd": [
+            "php setup.php"
+        ]
     }
 }
