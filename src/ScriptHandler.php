@@ -3,26 +3,28 @@
 // src/ScriptHandler.php
 namespace Rover;
 
+use Composer\InstalledVersions;
 use Exception;
 
 class ScriptHandler
 {
-    public static function createSymlink()
+    public static function createSymlink(): void
     {
         try {
-            $roboSrc = __DIR__ . '/../vendor/consolidation/robo/robo';
+            $roboSrc = InstalledVersions::getInstallPath('consolidation/robo') . '/robo';
             $roboDest = __DIR__ . '/../vendor/bin/robo';
 
             if (file_exists($roboDest)) {
-                echo "A file or symlink already exists at {$roboDest}. Aborting to prevent overwriting.\n";
-            } elseif (file_exists($roboSrc)) {
-                symlink($roboSrc, $roboDest);
-                echo "Symlink created successfully.\n";
-            } else {
-                echo "Source file not found at {$roboSrc}.\n";
+                throw new Exception("A file or symlink already exists at {$roboDest}. Aborting to prevent overwriting.");
             }
-        } catch (\Exception $e) {
-            echo 'Exception: ',  $e->getMessage(), "\n";
+
+            if (!file_exists($roboSrc)) {
+                throw new Exception("Source file not found at {$roboSrc}.");
+            }
+
+            symlink($roboSrc, $roboDest);
+        } catch (Exception $e) {
+            echo $e->getMessage(), "\n";
         }
     }
 }
