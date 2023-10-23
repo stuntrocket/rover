@@ -19,8 +19,10 @@ class ScriptHandler
             // Determine the actual source path based on the location of the robo binary
             $roboSrc = file_exists($roboSrcTopLevel) ? $roboSrcTopLevel : $roboSrcNested;
 
-            // Destination path remains the same
-            $roboDestDir = __DIR__ . '/../../../vendor/bin';
+            // Check for a top-level bin directory
+            $roboDestDirTopLevel = __DIR__ . '/../../../bin';
+            // Fall back to vendor/bin if the top-level bin directory doesn't exist
+            $roboDestDir = file_exists($roboDestDirTopLevel) ? $roboDestDirTopLevel : __DIR__ . '/../../../vendor/bin';
             $roboDest = $roboDestDir . '/robo';
 
             if (!file_exists($roboDestDir)) {
