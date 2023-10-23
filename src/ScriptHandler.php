@@ -27,8 +27,9 @@ class ScriptHandler
                 mkdir($roboDestDir, 0755, true);
             }
 
-            if (file_exists($roboDest)) {
-                throw new Exception("A file or symlink already exists at {$roboDest}. Aborting to prevent overwriting.");
+            // Unlink the existing symlink if it already exists
+            if (is_link($roboDest)) {
+                unlink($roboDest);
             }
 
             if (!file_exists($roboSrc)) {
