@@ -12,7 +12,9 @@ Rover is a command-line tool built on Robo that streamlines Laravel development 
 - 🗄️ **Safe Database Operations** - Fresh migrations with built-in safety checks
 - ✅ **Intelligent Testing** - Auto-detect Pest or PHPUnit and run tests
 - 🎨 **Code Quality** - Integrated Pint linting and formatting
-- 📦 **Multi-Project Support** - Manage multiple Laravel projects
+- 📦 **Multi-Project Management** - Manage multiple Laravel projects efficiently
+- 🔄 **Batch Operations** - Run commands across all projects simultaneously
+- 📊 **Project Insights** - Analytics, statistics, and health monitoring
 - ⚙️ **Team Configuration** - Share standards via `rover.yml`
 - 🔧 **Environment Management** - Smart .env generation and validation
 - 🔗 **Git Integration** - Pre-commit hooks and workflow automation
@@ -396,6 +398,153 @@ Shows project names and Laravel versions.
 
 ---
 
+### Workspace Management
+
+#### `rover:health`
+Run comprehensive health checks across all Laravel projects.
+
+```bash
+vendor/bin/robo rover:health
+```
+
+Checks for:
+- Missing dependencies
+- Environment configuration
+- Storage permissions
+- Git status
+- Outdated packages
+
+#### `rover:switch`
+Quick switch between Laravel projects with interactive selection.
+
+```bash
+vendor/bin/robo rover:switch              # Interactive selection
+vendor/bin/robo rover:switch my-project   # Direct switch
+```
+
+#### `rover:workspace:status`
+Detailed overview of all projects in workspace.
+
+```bash
+vendor/bin/robo rover:workspace:status
+```
+
+Shows Laravel version, git branch, environment, and dependency status.
+
+#### `rover:workspace:versions`
+Compare Laravel versions across all projects.
+
+```bash
+vendor/bin/robo rover:workspace:versions
+```
+
+---
+
+### Batch Operations
+
+#### `rover:run-all`
+Execute any command across all Laravel projects.
+
+```bash
+vendor/bin/robo rover:run-all "php artisan migrate"
+vendor/bin/robo rover:run-all "git pull" --continue
+```
+
+#### `rover:update-all`
+Update composer dependencies in all projects.
+
+```bash
+vendor/bin/robo rover:update-all
+vendor/bin/robo rover:update-all --dev        # Dev dependencies only
+vendor/bin/robo rover:update-all --continue   # Continue on failures
+```
+
+#### `rover:test-all`
+Run test suites across all projects.
+
+```bash
+vendor/bin/robo rover:test-all
+vendor/bin/robo rover:test-all --continue  # Continue even if tests fail
+```
+
+#### `rover:git:pull-all`
+Pull latest changes in all git repositories.
+
+```bash
+vendor/bin/robo rover:git:pull-all
+```
+
+Automatically skips repositories with uncommitted changes.
+
+#### `rover:clear-all`
+Clear all caches across all Laravel projects.
+
+```bash
+vendor/bin/robo rover:clear-all
+```
+
+#### `rover:install-all`
+Run composer install in all projects.
+
+```bash
+vendor/bin/robo rover:install-all
+```
+
+---
+
+### Project Insights & Analytics
+
+#### `rover:insights:stats`
+Generate detailed statistics for a project.
+
+```bash
+vendor/bin/robo rover:insights:stats              # Current project
+vendor/bin/robo rover:insights:stats my-project   # Specific project
+```
+
+Shows:
+- Lines of code
+- File counts (controllers, models, migrations, tests)
+- Dependency counts
+- Git statistics
+- Test ratio
+
+#### `rover:insights:dependencies`
+Compare dependency versions across all projects.
+
+```bash
+vendor/bin/robo rover:insights:dependencies
+```
+
+Identifies version inconsistencies for standardization.
+
+#### `rover:insights:security`
+Security audit across all projects.
+
+```bash
+vendor/bin/robo rover:insights:security
+```
+
+Runs composer audit to detect known vulnerabilities.
+
+#### `rover:insights:outdated`
+Check for outdated packages in all projects.
+
+```bash
+vendor/bin/robo rover:insights:outdated
+```
+
+#### `rover:insights:report`
+Generate comprehensive workspace report.
+
+```bash
+vendor/bin/robo rover:insights:report
+```
+
+Provides overview of all projects including Laravel versions, git status, and testing coverage.
+
+---
+
 ## Configuration
 
 Rover uses a `rover.yml` configuration file to define team standards:
@@ -500,6 +649,48 @@ vendor/bin/robo rover:env:compare    # Check for new env variables
 vendor/bin/robo rover:check          # Run all quality checks
 vendor/bin/robo rover:coverage       # Generate coverage report
 vendor/bin/robo rover:analyze        # Static analysis
+```
+
+### Managing Multiple Projects (Agencies & Teams)
+```bash
+# Quick health check on all projects
+vendor/bin/robo rover:health
+
+# Get workspace overview
+vendor/bin/robo rover:workspace:status
+
+# Run tests across all projects
+vendor/bin/robo rover:test-all
+
+# Update all projects
+vendor/bin/robo rover:update-all
+
+# Pull latest changes in all repos
+vendor/bin/robo rover:git:pull-all
+
+# Security audit across workspace
+vendor/bin/robo rover:insights:security
+
+# Generate workspace report
+vendor/bin/robo rover:insights:report
+
+# Run custom command on all projects
+vendor/bin/robo rover:run-all "php artisan migrate"
+```
+
+### Weekly Maintenance
+```bash
+# Check for outdated packages
+vendor/bin/robo rover:insights:outdated
+
+# Security audit
+vendor/bin/robo rover:insights:security
+
+# Check dependency consistency
+vendor/bin/robo rover:insights:dependencies
+
+# Compare Laravel versions
+vendor/bin/robo rover:workspace:versions
 ```
 
 ## Aliases
