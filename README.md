@@ -22,6 +22,7 @@ Rover is a command-line tool built on Robo that streamlines Laravel development 
 - 📮 **Queue Management** - Monitor, restart, and manage Laravel queues
 - ⏰ **Schedule Management** - Test, verify, and document scheduled commands
 - ⚡ **Performance Profiling** - Profile routes, detect N+1 queries, benchmark performance
+- 📦 **Package Development** - Scaffold, link, test, and publish Laravel packages
 - ⚙️ **Team Configuration** - Share standards via `rover.yml`
 - 🔧 **Environment Management** - Smart .env generation and validation
 - 🔗 **Git Integration** - Pre-commit hooks and workflow automation
@@ -926,6 +927,86 @@ Displays:
 
 ---
 
+### Package Development
+
+#### `rover:package:init`
+Create a new Laravel package with complete structure.
+
+```bash
+vendor/bin/robo rover:package:init vendor/package-name
+vendor/bin/robo rover:package:init vendor/package-name --path=packages
+```
+
+Creates:
+- Complete package structure (src, tests, config, migrations, views)
+- composer.json with proper autoloading
+- Service provider
+- README and LICENSE templates
+- PHPUnit/Pest configuration
+- GitHub Actions workflow
+- .gitignore
+
+#### `rover:package:link`
+Link package for local development (symlink to vendor).
+
+```bash
+# From Laravel project
+vendor/bin/robo rover:package:link ../packages/vendor/package
+
+# Or from package directory
+cd packages/vendor/package
+vendor/bin/robo rover:package:link
+```
+
+Automatically:
+- Adds path repository to composer.json
+- Creates symlink in vendor/
+- Enables live development
+
+#### `rover:package:unlink`
+Unlink package and remove from project.
+
+```bash
+vendor/bin/robo rover:package:unlink vendor/package-name
+```
+
+#### `rover:package:test`
+Run package tests in isolation.
+
+```bash
+vendor/bin/robo rover:package:test
+vendor/bin/robo rover:package:test ../packages/vendor/package
+```
+
+#### `rover:package:publish`
+Verify package is ready for publishing.
+
+```bash
+vendor/bin/robo rover:package:publish
+```
+
+Checks:
+- composer.json completeness
+- README existence
+- LICENSE file
+- Test coverage
+- Documentation quality
+
+#### `rover:package:docs`
+Generate package documentation.
+
+```bash
+vendor/bin/robo rover:package:docs
+```
+
+Creates README.md template with:
+- Installation instructions
+- Usage examples
+- Testing commands
+- Contributing guidelines
+
+---
+
 ## Configuration
 
 Rover uses a `rover.yml` configuration file to define team standards:
@@ -1149,6 +1230,34 @@ rover:queue:failed                       # View failures
 rover:queue:restart                      # Restart workers
 rover:queue:clear                        # Clear failed jobs
 rover:queue:retry-all                    # Retry all failed
+```
+
+### Package Development
+```bash
+# Create new package
+rover:package:init acme/awesome-package
+
+# Set up local development
+cd packages/acme/awesome-package
+composer install
+rover:package:test                       # Run tests
+
+# Link to Laravel project
+cd ../../../
+rover:package:link packages/acme/awesome-package
+
+# Develop with live reload
+# Edit package code, changes reflect immediately
+
+# Before publishing
+rover:package:publish                    # Check readiness
+rover:package:test                       # Final tests
+rover:package:docs                       # Generate docs
+
+# Publish to Packagist
+git tag v1.0.0
+git push --tags
+# Submit to packagist.org
 ```
 
 ## Aliases
