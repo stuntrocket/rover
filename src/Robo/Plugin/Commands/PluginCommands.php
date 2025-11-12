@@ -70,7 +70,7 @@ class PluginCommands extends BaseCommand
      *
      * @param string $name Plugin name
      */
-    public function info(string $name): Result
+    public function pluginInfo(string $name): Result
     {
         $pluginManager = PluginManager::getInstance();
         $plugin = $pluginManager->getPlugin($name);
