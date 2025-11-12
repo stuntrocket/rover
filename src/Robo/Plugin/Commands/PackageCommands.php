@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Laravel package development commands
@@ -21,7 +22,7 @@ class PackageCommands extends BaseCommand
         // Parse vendor and package name
         if (!str_contains($name, '/')) {
             $this->error('Package name must be in format: vendor/package');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         [$vendor, $package] = explode('/', $name);
@@ -33,7 +34,7 @@ class PackageCommands extends BaseCommand
 
         if (is_dir($packagePath)) {
             $this->error("Package directory already exists: $packagePath");
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         mkdir($packagePath, 0755, true);
@@ -58,7 +59,7 @@ class PackageCommands extends BaseCommand
         $this->say("  composer install");
         $this->say("  vendor/bin/robo rover:package:link");
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -79,7 +80,7 @@ class PackageCommands extends BaseCommand
         $composerFile = "$packagePath/composer.json";
         if (!file_exists($composerFile)) {
             $this->error('No composer.json found in package path');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $composer = json_decode(file_get_contents($composerFile), true);
@@ -87,7 +88,7 @@ class PackageCommands extends BaseCommand
 
         if (!$packageName) {
             $this->error('Package name not found in composer.json');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info("Linking package: $packageName");
@@ -178,7 +179,7 @@ class PackageCommands extends BaseCommand
 
         $this->success('✓ Package unlinked successfully!');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -204,7 +205,7 @@ class PackageCommands extends BaseCommand
         if (!file_exists($testCommand)) {
             $this->error('Test runner not found. Run composer install first.');
             chdir($originalDir);
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $result = $this->taskExec($testCommand)->run();
@@ -321,7 +322,7 @@ class PackageCommands extends BaseCommand
             $this->say("  - Complete README documentation");
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -341,7 +342,7 @@ class PackageCommands extends BaseCommand
         $composerFile = "$packagePath/composer.json";
         if (!file_exists($composerFile)) {
             $this->error('composer.json not found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $composer = json_decode(file_get_contents($composerFile), true);
@@ -362,7 +363,7 @@ class PackageCommands extends BaseCommand
 
         $this->success("✓ Documentation generated: $readmePath");
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**

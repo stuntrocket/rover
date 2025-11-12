@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Output and messaging commands
@@ -18,6 +19,6 @@ class SayCommands extends BaseCommand
     public function sayMessage(string $message): Result
     {
         $this->say($message);
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 }

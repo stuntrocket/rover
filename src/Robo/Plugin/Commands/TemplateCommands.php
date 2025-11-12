@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Template generation for CI/CD pipelines and boilerplate files
@@ -100,7 +101,7 @@ YAML;
 
         $this->success('✓ GitHub Actions workflow created at .github/workflows/laravel.yml');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -174,7 +175,7 @@ YAML;
 
         $this->success('✓ GitLab CI configuration created at .gitlab-ci.yml');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -355,7 +356,7 @@ IGNORE;
 
         $this->info("\nTo start: docker-compose up -d");
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -487,7 +488,7 @@ README;
 
         $this->success('✓ README.md created');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -529,6 +530,6 @@ README;
 
         $this->success("\n✓ All requested templates generated!");
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 }

@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Cache management commands for Laravel projects
@@ -61,11 +62,11 @@ class CacheCommands extends BaseCommand
 
         if (!empty($failed)) {
             $this->error('Failed to clear: ' . implode(', ', $failed));
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->success('All caches cleared successfully!');
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -119,13 +120,13 @@ class CacheCommands extends BaseCommand
 
         if (!empty($failed)) {
             $this->error('Failed to optimize: ' . implode(', ', $failed));
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->success('Application optimized successfully!');
         $this->info('Note: Remember to run "rover:clear" in development to disable caching.');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**

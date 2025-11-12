@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Migration safety and management commands
@@ -24,7 +25,7 @@ class MigrationCommands extends BaseCommand
 
         if (empty($migrations)) {
             $this->warning('No migrations found');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $conflicts = [];
@@ -77,10 +78,10 @@ class MigrationCommands extends BaseCommand
             $this->say("2. Copying the migration code to the new file");
             $this->say("3. Deleting the conflicting migration");
 
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -98,7 +99,7 @@ class MigrationCommands extends BaseCommand
         if (!$this->isLocalEnvironment() && !$options['force']) {
             $this->error('Cannot rollback in production!');
             $this->warning('Use --force only if you are absolutely certain.');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Checking which migrations will be rolled back...');
@@ -108,7 +109,7 @@ class MigrationCommands extends BaseCommand
 
         if (!$result->wasSuccessful()) {
             $this->error('Could not get migration status');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->say('');
@@ -171,7 +172,7 @@ class MigrationCommands extends BaseCommand
             }
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -239,11 +240,11 @@ class MigrationCommands extends BaseCommand
 
         if (empty($issues) && !$foundRisky) {
             $this->success('✓ Migrations are safe to run!');
-            return Result::success($this);
+            return new ResultData(0, "");
         } else {
             $this->warning('⚠ Review warnings before running migrations');
             $this->info('Run with: php artisan migrate --pretend to preview SQL');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 

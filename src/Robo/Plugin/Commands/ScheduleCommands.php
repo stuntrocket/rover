@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Schedule management and testing commands
@@ -101,7 +102,7 @@ class ScheduleCommands extends BaseCommand
 
         if (!$listResult->wasSuccessful()) {
             $this->error('✗ Could not list scheduled commands');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->success('✓ Schedule commands are configured');
@@ -137,7 +138,7 @@ class ScheduleCommands extends BaseCommand
             }
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -156,7 +157,7 @@ class ScheduleCommands extends BaseCommand
 
         if (empty($output)) {
             $this->warning('No scheduled commands found.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         // Create docs directory
@@ -187,6 +188,6 @@ class ScheduleCommands extends BaseCommand
 
         $this->success("✓ Documentation generated: $docsFile");
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 }

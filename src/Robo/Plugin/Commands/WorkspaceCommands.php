@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Workspace and multi-project management commands
@@ -23,7 +24,7 @@ class WorkspaceCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->warning('No Laravel projects found');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->say('');
@@ -112,7 +113,7 @@ class WorkspaceCommands extends BaseCommand
         $this->say("  Healthy: " . count($healthy) . " project(s)");
         $this->say("  Issues:  " . count($issues) . " project(s)");
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -128,7 +129,7 @@ class WorkspaceCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // If no project specified, show interactive selection
@@ -143,7 +144,7 @@ class WorkspaceCommands extends BaseCommand
 
             if (!isset($projects[$index])) {
                 $this->error('Invalid selection');
-                return Result::error($this);
+                return new ResultData(1, "");
             }
 
             $project = $projects[$index];
@@ -153,7 +154,7 @@ class WorkspaceCommands extends BaseCommand
         if (!in_array($project, $projects)) {
             $this->error("Project '$project' not found");
             $this->info('Available projects: ' . implode(', ', $projects));
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Generate switch command
@@ -168,7 +169,7 @@ class WorkspaceCommands extends BaseCommand
             }
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -185,7 +186,7 @@ class WorkspaceCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->warning('No Laravel projects found');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         foreach ($projects as $project) {
@@ -238,7 +239,7 @@ class WorkspaceCommands extends BaseCommand
             $this->say('');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -287,7 +288,7 @@ class WorkspaceCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->warning('No Laravel projects found');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $versions = [];
@@ -310,6 +311,6 @@ class WorkspaceCommands extends BaseCommand
             $this->say('');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 }

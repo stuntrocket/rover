@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Database management commands for Laravel projects
@@ -27,7 +28,7 @@ class DatabaseCommands extends BaseCommand
         if (!$options['force'] && !$this->isLocalEnvironment()) {
             $this->error('This command cannot be run in production!');
             $this->warning('Use --force flag only if you absolutely know what you\'re doing.');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->warning('This will DROP ALL TABLES and re-run migrations!');
@@ -51,7 +52,7 @@ class DatabaseCommands extends BaseCommand
 
         if (!$result->wasSuccessful()) {
             $this->error('Migration failed!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         if ($options['seed']) {
@@ -60,7 +61,7 @@ class DatabaseCommands extends BaseCommand
             $this->success('Database migrated successfully!');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -76,7 +77,7 @@ class DatabaseCommands extends BaseCommand
 
         if (!$options['force'] && !$this->isLocalEnvironment()) {
             $this->error('This command cannot be run in production!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Resetting database...');
@@ -87,7 +88,7 @@ class DatabaseCommands extends BaseCommand
 
         if (!$rollbackResult->wasSuccessful()) {
             $this->error('Rollback failed!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Run migrations
@@ -96,7 +97,7 @@ class DatabaseCommands extends BaseCommand
 
         if (!$migrateResult->wasSuccessful()) {
             $this->error('Migration failed!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Seed if requested
@@ -106,12 +107,12 @@ class DatabaseCommands extends BaseCommand
 
             if (!$seedResult->wasSuccessful()) {
                 $this->error('Seeding failed!');
-                return Result::error($this);
+                return new ResultData(1, "");
             }
         }
 
         $this->success('Database reset successfully!');
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -137,11 +138,11 @@ class DatabaseCommands extends BaseCommand
 
         if (!$result->wasSuccessful()) {
             $this->error('Seeding failed!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->success('Database seeded successfully!');
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**

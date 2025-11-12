@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Demo and example commands
@@ -20,6 +21,6 @@ class HelloCommands extends BaseCommand
         $this->say("Hello, $name! 👋");
         $this->info('Rover is ready to help with your Laravel projects!');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 }

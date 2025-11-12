@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Batch operations across multiple Laravel projects
@@ -22,7 +23,7 @@ class BatchCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info("Running '$command' in " . count($projects) . " project(s)...");
@@ -67,7 +68,7 @@ class BatchCommands extends BaseCommand
             $this->warning("Failed in: " . implode(', ', $failed));
         }
 
-        return count($failed) === 0 ? Result::success($this) : Result::error($this);
+        return count($failed) === 0 ? new ResultData(0, "") : new ResultData(1, "");
     }
 
     /**
@@ -83,7 +84,7 @@ class BatchCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->warning('This will update composer dependencies in all projects!');
@@ -133,7 +134,7 @@ class BatchCommands extends BaseCommand
         $this->say("  Updated: " . count($successful) . " project(s)");
         $this->say("  Failed:  " . count($failed) . " project(s)");
 
-        return count($failed) === 0 ? Result::success($this) : Result::error($this);
+        return count($failed) === 0 ? new ResultData(0, "") : new ResultData(1, "");
     }
 
     /**
@@ -148,7 +149,7 @@ class BatchCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info("Running tests in " . count($projects) . " project(s)...");
@@ -208,7 +209,7 @@ class BatchCommands extends BaseCommand
             $this->warning("Tests failed in: " . implode(', ', $failed));
         }
 
-        return count($failed) === 0 ? Result::success($this) : Result::error($this);
+        return count($failed) === 0 ? new ResultData(0, "") : new ResultData(1, "");
     }
 
     /**
@@ -223,7 +224,7 @@ class BatchCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info("Pulling latest changes in " . count($projects) . " project(s)...");
@@ -282,7 +283,7 @@ class BatchCommands extends BaseCommand
         $this->say("  Failed:  " . count($failed) . " project(s)");
         $this->say("  Skipped: " . count($skipped) . " project(s)");
 
-        return count($failed) === 0 ? Result::success($this) : Result::error($this);
+        return count($failed) === 0 ? new ResultData(0, "") : new ResultData(1, "");
     }
 
     /**
@@ -296,7 +297,7 @@ class BatchCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info("Clearing caches in " . count($projects) . " project(s)...");
@@ -322,7 +323,7 @@ class BatchCommands extends BaseCommand
 
         $this->success('All caches cleared!');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -337,7 +338,7 @@ class BatchCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info("Installing dependencies in " . count($projects) . " project(s)...");
@@ -376,7 +377,7 @@ class BatchCommands extends BaseCommand
         $this->say("  Installed: " . count($successful) . " project(s)");
         $this->say("  Failed:    " . count($failed) . " project(s)");
 
-        return count($failed) === 0 ? Result::success($this) : Result::error($this);
+        return count($failed) === 0 ? new ResultData(0, "") : new ResultData(1, "");
     }
 
     /**

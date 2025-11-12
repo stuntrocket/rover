@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Performance profiling and optimization commands
@@ -31,7 +32,7 @@ class PerformanceCommands extends BaseCommand
 
         if (!$baseUrl) {
             $this->error('Could not determine APP_URL from .env');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $fullUrl = rtrim($baseUrl, '/') . '/' . ltrim($url, '/');
@@ -80,7 +81,7 @@ class PerformanceCommands extends BaseCommand
             $this->error('✗ Slow performance (optimization needed)');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -149,7 +150,7 @@ class PerformanceCommands extends BaseCommand
             $this->success('✓ No obvious N+1 patterns detected');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -197,7 +198,7 @@ class PerformanceCommands extends BaseCommand
             $this->warning('⚠ Database performance may need optimization');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -231,7 +232,7 @@ class PerformanceCommands extends BaseCommand
         $this->success('✓ Caches warmed!');
         $this->info('Application is ready for optimal performance');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -296,7 +297,7 @@ class PerformanceCommands extends BaseCommand
             }
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
