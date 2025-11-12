@@ -220,7 +220,7 @@ class EnvCommands extends BaseCommand
      *
      * @command rover:env:info
      */
-    public function info(): Result
+    public function envInfo(): Result
     {
         $this->requireLaravelProject();
 
