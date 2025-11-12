@@ -23,6 +23,7 @@ Rover is a command-line tool built on Robo that streamlines Laravel development 
 - ⏰ **Schedule Management** - Test, verify, and document scheduled commands
 - ⚡ **Performance Profiling** - Profile routes, detect N+1 queries, benchmark performance
 - 📦 **Package Development** - Scaffold, link, test, and publish Laravel packages
+- 🔌 **Plugin System** - Extend Rover with project-specific commands and functionality
 - ⚙️ **Team Configuration** - Share standards via `rover.yml`
 - 🔧 **Environment Management** - Smart .env generation and validation
 - 🔗 **Git Integration** - Pre-commit hooks and workflow automation
@@ -1004,6 +1005,189 @@ Creates README.md template with:
 - Usage examples
 - Testing commands
 - Contributing guidelines
+
+---
+
+### Plugin System & Extensibility
+
+Rover features a powerful plugin system that allows you to create project-specific commands and extend functionality without modifying Rover core.
+
+#### `rover:plugin:list`
+List all discovered plugins.
+
+```bash
+vendor/bin/robo rover:plugin:list           # All plugins
+vendor/bin/robo rover:plugin:list --loaded  # Only loaded plugins
+```
+
+#### `rover:plugin:info`
+Show detailed information about a specific plugin.
+
+```bash
+vendor/bin/robo rover:plugin:info example
+```
+
+Displays:
+- Plugin metadata (name, version, description, author)
+- Status (enabled/disabled, loaded/unloaded)
+- Registered commands
+- Dependencies
+
+#### `rover:plugin:create`
+Scaffold a new plugin from template.
+
+```bash
+vendor/bin/robo rover:plugin:create my-plugin
+vendor/bin/robo rover:plugin:create my-plugin --path=.rover/plugins
+vendor/bin/robo rover:plugin:create my-plugin --author="Your Name" --description="Custom plugin"
+```
+
+Creates complete plugin structure:
+- `plugin.json` - Plugin metadata
+- `bootstrap.php` - Bootstrap file
+- `src/Plugin.php` - Main plugin class
+- `src/Commands/` - Command classes
+- `README.md` - Documentation
+
+#### `rover:plugin:enable`
+Enable a plugin.
+
+```bash
+vendor/bin/robo rover:plugin:enable my-plugin
+```
+
+#### `rover:plugin:disable`
+Disable a plugin.
+
+```bash
+vendor/bin/robo rover:plugin:disable my-plugin
+```
+
+#### `rover:plugin:validate`
+Validate plugin structure and configuration.
+
+```bash
+vendor/bin/robo rover:plugin:validate my-plugin
+```
+
+Checks for:
+- Required files (plugin.json, bootstrap.php)
+- Valid metadata
+- Proper structure
+
+#### `rover:plugin:hooks`
+List available plugin hooks.
+
+```bash
+vendor/bin/robo rover:plugin:hooks
+```
+
+Available hooks:
+- `before_command` - Before any Rover command
+- `after_command` - After any Rover command
+- `project_init` - When initializing project
+- `backup_created` - After backup creation
+- `migration_run` - After migrations run
+- `test_completed` - After tests complete
+- `deployment_started` - When deployment starts
+- `deployment_completed` - When deployment completes
+
+#### Creating a Plugin
+
+1. **Create the plugin structure:**
+
+```bash
+vendor/bin/robo rover:plugin:create my-plugin
+```
+
+2. **Edit the plugin class** (`.rover/plugins/my-plugin/src/Plugin.php`):
+
+```php
+<?php
+
+use Rover\Plugin\BasePlugin;
+
+class MyPlugin extends BasePlugin
+{
+    public function boot(): void
+    {
+        $this->name = 'my-plugin';
+        $this->version = '1.0.0';
+        $this->description = 'Custom plugin for my project';
+
+        // Register commands
+        $this->registerCommand(MyPluginCommands::class);
+
+        // Register hooks
+        $this->registerHook('before_command', function($data) {
+            $this->log('Command executing...');
+        });
+    }
+}
+```
+
+3. **Create your commands** (`.rover/plugins/my-plugin/src/Commands/MyPluginCommands.php`):
+
+```php
+<?php
+
+use Rover\Robo\Plugin\Commands\BaseCommand;
+use Robo\Result;
+
+class MyPluginCommands extends BaseCommand
+{
+    /**
+     * @command my-plugin:hello
+     */
+    public function hello(string $name = 'World'): Result
+    {
+        $this->io()->success("Hello, $name!");
+
+        // Use BaseCommand utilities
+        if ($this->isLaravelProject()) {
+            $version = $this->getLaravelVersion();
+            $this->io()->note("Laravel $version detected");
+        }
+
+        return Result::success($this);
+    }
+}
+```
+
+4. **Configure in rover.yml:**
+
+```yaml
+plugins:
+  my-plugin:
+    enabled: true
+    custom_option: value
+```
+
+5. **Use your plugin:**
+
+```bash
+vendor/bin/robo my-plugin:hello John
+```
+
+#### Plugin Locations
+
+Rover searches for plugins in these locations (in order):
+
+1. `.rover/plugins/` - Project-specific plugins (highest priority)
+2. `rover/plugins/` - Alternative project location
+3. `[rover-install]/plugins/` - Global Rover plugins
+
+#### Example Plugin
+
+Rover includes an example plugin demonstrating all features. Check it out:
+
+```bash
+vendor/bin/robo rover:plugin:info example
+vendor/bin/robo example:hello
+vendor/bin/robo example:demo
+```
+
+Study the example plugin source code at `plugins/example/` for reference.
 
 ---
 

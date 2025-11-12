@@ -241,6 +241,21 @@ deployment:
   strategy: zero-downtime
   backup_before_deploy: true
 
+# Plugin settings
+plugins:
+  # List of enabled plugins (empty means all auto-loadable plugins are enabled)
+  enabled: []
+
+  # Example plugin configuration
+  example:
+    enabled: true
+    greeting: Hello
+
+  # Add your custom plugin configurations here
+  # your-plugin-name:
+  #   enabled: true
+  #   custom_option: value
+
 YAML;
 
         return file_put_contents($path, $defaultConfig) !== false;

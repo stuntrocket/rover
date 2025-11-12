@@ -4,12 +4,34 @@ namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Tasks;
 use Robo\Result;
+use Rover\Plugin\PluginManager;
 
 /**
  * Base command class with Laravel detection and common utilities
  */
 abstract class BaseCommand extends Tasks
 {
+    protected ?PluginManager $pluginManager = null;
+
+    /**
+     * Get plugin manager instance
+     */
+    protected function getPluginManager(): PluginManager
+    {
+        if ($this->pluginManager === null) {
+            $this->pluginManager = PluginManager::getInstance();
+        }
+
+        return $this->pluginManager;
+    }
+
+    /**
+     * Trigger a plugin hook
+     */
+    protected function triggerHook(string $hook, array $data = []): void
+    {
+        $this->getPluginManager()->triggerHook($hook, $data);
+    }
     /**
      * Check if current directory is a Laravel project
      *
