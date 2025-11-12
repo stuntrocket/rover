@@ -2,20 +2,22 @@
 
 namespace Rover\Robo\Plugin\Commands;
 
-use Robo\Symfony\ConsoleIO;
+use Robo\Result;
 
 /**
- * This is project's console commands configuration for Robo task runner.
- *
- * @see https://robo.li/
+ * Output and messaging commands
  */
-class SayCommands extends \Robo\Tasks
+class SayCommands extends BaseCommand
 {
     /**
+     * Display a message
+     *
      * @command rover:say
+     * @param string $message The message to display
      */
-    public function say($words)
+    public function sayMessage(string $message): Result
     {
-        $this->say($words);
+        $this->say($message);
+        return Result::success($this);
     }
 }

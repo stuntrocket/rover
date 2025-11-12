@@ -2,36 +2,94 @@
 
 namespace Rover\Robo\Plugin\Commands;
 
-use Robo\Symfony\ConsoleIO;
+use Robo\Result;
 
 /**
- * This is project's console commands configuration for Robo task runner.
- *
- * @see https://robo.li/
+ * Backup and project listing commands
  */
-class BackupCommands extends \Robo\Tasks
+class BackupCommands extends BaseCommand
 {
-
     /**
-     * @command rover:sitelist
-     * List site directories
+     * List Laravel projects in current directory
      *
-     * @return array
+     * @command rover:list
+     * @aliases list
      */
-    public function siteList()
+    public function listProjects(): Result
     {
-        $f = [];
-        $d = dir('.');
+        $this->info('Scanning for Laravel projects...');
 
-        if ($d) {
-            while (false !== ($entry = $d->read())) {
-                if (is_dir($entry) && !in_array($entry, ['.', '..'])) {
-                    $f[] = $entry;
-                }
-            }
-            $d->close();
+        $projects = $this->findLaravelProjects('.');
+
+        if (empty($projects)) {
+            $this->warning('No Laravel projects found in current directory.');
+            return Result::success($this);
         }
 
-        return $f;
+        $this->say("\nFound " . count($projects) . " Laravel project(s):\n");
+
+        foreach ($projects as $project) {
+            $this->say("  📁 $project");
+
+            // Try to get Laravel version
+            $composerPath = "$project/composer.json";
+            if (file_exists($composerPath)) {
+                $composer = json_decode(file_get_contents($composerPath), true);
+                if (isset($composer['require']['laravel/framework'])) {
+                    $version = $composer['require']['laravel/framework'];
+                    $this->say("     Laravel: $version");
+                }
+            }
+        }
+
+        $this->say('');
+        return Result::success($this);
+    }
+
+    /**
+     * Find Laravel projects in directory
+     *
+     * @param string $directory
+     * @return array
+     */
+    protected function findLaravelProjects(string $directory): array
+    {
+        $projects = [];
+        $d = dir($directory);
+
+        if (!$d) {
+            return $projects;
+        }
+
+        while (false !== ($entry = $d->read())) {
+            if ($entry === '.' || $entry === '..') {
+                continue;
+            }
+
+            $path = "$directory/$entry";
+
+            if (is_dir($path)) {
+                // Check if it's a Laravel project
+                if (file_exists("$path/artisan") && file_exists("$path/composer.json")) {
+                    $projects[] = $entry;
+                }
+            }
+        }
+
+        $d->close();
+        sort($projects);
+
+        return $projects;
+    }
+
+    /**
+     * Legacy command for backward compatibility
+     *
+     * @command rover:sitelist
+     * @hidden
+     */
+    public function siteList(): array
+    {
+        return $this->findLaravelProjects('.');
     }
 }
