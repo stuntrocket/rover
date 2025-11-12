@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Rover CLI Helper Script
+#
+# This script provides a convenient wrapper around vendor/bin/robo for Rover commands.
+# It automatically detects if you're using Laravel Sail and routes commands appropriately.
+#
+# Usage:
+#   ./rover rover:clear
+#   ./rover rover:test
+#   ./rover list
+
+# Check if we're using Laravel Sail
+if [ -f ./vendor/bin/sail ]; then
+    # Run through Sail
+    ./vendor/bin/sail bash -c "vendor/bin/robo $*"
+else
+    # Run directly
+    vendor/bin/robo "$@"
+fi
