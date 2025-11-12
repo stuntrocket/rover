@@ -18,6 +18,10 @@ Rover is a command-line tool built on Robo that streamlines Laravel development 
 - 📦 **Multi-Project Management** - Manage multiple Laravel projects efficiently
 - 🔄 **Batch Operations** - Run commands across all projects simultaneously
 - 📊 **Project Insights** - Analytics, statistics, and health monitoring
+- 📝 **Log Management** - Tail, filter, and analyze Laravel logs
+- 📮 **Queue Management** - Monitor, restart, and manage Laravel queues
+- ⏰ **Schedule Management** - Test, verify, and document scheduled commands
+- ⚡ **Performance Profiling** - Profile routes, detect N+1 queries, benchmark performance
 - ⚙️ **Team Configuration** - Share standards via `rover.yml`
 - 🔧 **Environment Management** - Smart .env generation and validation
 - 🔗 **Git Integration** - Pre-commit hooks and workflow automation
@@ -692,6 +696,236 @@ Provides overview of all projects including Laravel versions, git status, and te
 
 ---
 
+### Log Management
+
+#### `rover:logs`
+Tail and filter Laravel logs.
+
+```bash
+vendor/bin/robo rover:logs                        # Last 50 lines
+vendor/bin/robo rover:logs --lines=100            # Last 100 lines
+vendor/bin/robo rover:logs --follow               # Follow mode (tail -f)
+vendor/bin/robo rover:logs --level=error          # Filter by level
+vendor/bin/robo rover:logs --grep="UserController" # Search pattern
+```
+
+Supported log levels: emergency, alert, critical, error, warning, notice, info, debug
+
+#### `rover:logs:clear`
+Clear Laravel log file.
+
+```bash
+vendor/bin/robo rover:logs:clear
+vendor/bin/robo rover:logs:clear --force
+```
+
+#### `rover:logs:stats`
+Show log file statistics.
+
+```bash
+vendor/bin/robo rover:logs:stats
+```
+
+Displays:
+- File size
+- Total lines
+- Errors by level (ERROR, WARNING, etc.)
+
+#### `rover:logs:errors`
+Find recent errors quickly.
+
+```bash
+vendor/bin/robo rover:logs:errors                 # Last 10 errors
+vendor/bin/robo rover:logs:errors --lines=20      # Last 20 errors
+```
+
+#### `rover:logs:archive`
+Archive and clear logs.
+
+```bash
+vendor/bin/robo rover:logs:archive
+```
+
+Archives to `storage/logs/archive/` with gzip compression.
+
+---
+
+### Queue Management
+
+#### `rover:queue:monitor`
+Monitor queue status and workers.
+
+```bash
+vendor/bin/robo rover:queue:monitor
+vendor/bin/robo rover:queue:monitor --queue=emails
+```
+
+Shows:
+- Failed job count
+- Running workers
+- Queue statistics
+
+#### `rover:queue:clear`
+Clear all failed jobs.
+
+```bash
+vendor/bin/robo rover:queue:clear
+vendor/bin/robo rover:queue:clear --force
+```
+
+#### `rover:queue:retry-all`
+Retry all failed jobs.
+
+```bash
+vendor/bin/robo rover:queue:retry-all
+```
+
+#### `rover:queue:failed`
+List failed jobs.
+
+```bash
+vendor/bin/robo rover:queue:failed
+```
+
+#### `rover:queue:restart`
+Gracefully restart queue workers.
+
+```bash
+vendor/bin/robo rover:queue:restart
+```
+
+Workers finish current jobs then restart.
+
+#### `rover:queue:work`
+Run queue worker in development.
+
+```bash
+vendor/bin/robo rover:queue:work
+vendor/bin/robo rover:queue:work --queue=emails --tries=5
+```
+
+---
+
+### Schedule Management
+
+#### `rover:schedule:list`
+List all scheduled commands.
+
+```bash
+vendor/bin/robo rover:schedule:list
+```
+
+#### `rover:schedule:run`
+Run scheduled commands manually.
+
+```bash
+vendor/bin/robo rover:schedule:run
+```
+
+#### `rover:schedule:test`
+Test scheduled commands immediately.
+
+```bash
+vendor/bin/robo rover:schedule:test                   # All commands
+vendor/bin/robo rover:schedule:test "emails:send"     # Specific command
+```
+
+#### `rover:schedule:work`
+Run scheduler in foreground (development).
+
+```bash
+vendor/bin/robo rover:schedule:work
+```
+
+#### `rover:schedule:check`
+Verify cron setup.
+
+```bash
+vendor/bin/robo rover:schedule:check
+```
+
+Checks:
+- Scheduled commands configuration
+- Cron job setup
+- Recent schedule runs
+
+#### `rover:schedule:docs`
+Generate schedule documentation.
+
+```bash
+vendor/bin/robo rover:schedule:docs
+```
+
+Creates `docs/SCHEDULE.md` with all scheduled commands.
+
+---
+
+### Performance & Profiling
+
+#### `rover:profile`
+Profile application performance.
+
+```bash
+vendor/bin/robo rover:profile                    # Profile homepage
+vendor/bin/robo rover:profile /api/users        # Profile specific route
+```
+
+Runs multiple requests and shows:
+- Average response time
+- Min/max response time
+- Performance rating
+
+#### `rover:n+1`
+Detect N+1 query problems.
+
+```bash
+vendor/bin/robo rover:n+1
+```
+
+- Checks for Telescope/Debugbar
+- Scans code for common N+1 patterns
+- Provides optimization suggestions
+
+#### `rover:benchmark`
+Benchmark database performance.
+
+```bash
+vendor/bin/robo rover:benchmark
+```
+
+Tests:
+- Simple queries
+- Database connection
+- Overall performance
+
+#### `rover:cache:warm`
+Warm all application caches for optimal performance.
+
+```bash
+vendor/bin/robo rover:cache:warm
+```
+
+Caches:
+- Configuration
+- Routes
+- Views
+- Events
+
+#### `rover:metrics`
+Show application metrics.
+
+```bash
+vendor/bin/robo rover:metrics
+```
+
+Displays:
+- PHP and Laravel versions
+- Cache sizes
+- Log file size
+- Database size
+
+---
+
 ## Configuration
 
 Rover uses a `rover.yml` configuration file to define team standards:
@@ -866,6 +1100,55 @@ vendor/bin/robo rover:db:anonymize
 
 # Safe migration rollback
 vendor/bin/robo rover:migrate:rollback-safe --step=1
+```
+
+### Debugging & Troubleshooting
+```bash
+# Check logs for errors
+rover:logs:errors                        # Recent errors
+rover:logs --level=error --follow        # Watch errors in real-time
+
+# Monitor queues
+rover:queue:monitor                      # Queue status
+rover:queue:failed                       # View failed jobs
+rover:queue:retry-all                    # Retry failed jobs
+
+# Check schedule
+rover:schedule:check                     # Verify cron setup
+rover:schedule:test                      # Test scheduled commands
+
+# Profile performance issues
+rover:profile /api/slow-endpoint         # Profile specific route
+rover:n+1                                # Detect N+1 queries
+rover:benchmark                          # Database performance
+```
+
+### Performance Optimization
+```bash
+# Before deployment - optimize
+rover:cache:warm                         # Warm all caches
+rover:optimize                           # Optimize Laravel
+rover:profile /                          # Verify performance
+
+# Monitor and improve
+rover:metrics                            # Check resource usage
+rover:n+1                                # Find query issues
+rover:logs:stats                         # Analyze log patterns
+```
+
+### Queue & Background Jobs
+```bash
+# Development workflow
+rover:queue:work                         # Run worker locally
+
+# Monitoring
+rover:queue:monitor                      # Check queue health
+rover:queue:failed                       # View failures
+
+# Maintenance
+rover:queue:restart                      # Restart workers
+rover:queue:clear                        # Clear failed jobs
+rover:queue:retry-all                    # Retry all failed
 ```
 
 ## Aliases
