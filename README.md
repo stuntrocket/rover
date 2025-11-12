@@ -10,6 +10,9 @@ Rover is a command-line tool built on Robo that streamlines Laravel development 
 - 🚀 **Project Scaffolding** - Create new Laravel projects with best practices built-in
 - 🧹 **Smart Cache Management** - Clear and optimize with single commands
 - 🗄️ **Safe Database Operations** - Fresh migrations with built-in safety checks
+- 💾 **Database Backup & Restore** - Automated backups with rotation, snapshots, and restore
+- 🔒 **Data Anonymization** - Safely anonymize production data for development
+- 🛡️ **Migration Safety** - Conflict detection, verification, and safe rollbacks
 - ✅ **Intelligent Testing** - Auto-detect Pest or PHPUnit and run tests
 - 🎨 **Code Quality** - Integrated Pint linting and formatting
 - 📦 **Multi-Project Management** - Manage multiple Laravel projects efficiently
@@ -265,6 +268,150 @@ Show migration status.
 ```bash
 vendor/bin/robo rover:db:status
 ```
+
+---
+
+### Database Backup & Management
+
+#### `rover:db:backup`
+Create timestamped database backups with automatic rotation.
+
+```bash
+vendor/bin/robo rover:db:backup                    # Auto timestamp
+vendor/bin/robo rover:db:backup --name=before-deploy  # Custom name
+vendor/bin/robo rover:db:backup --no-compress      # Uncompressed
+```
+
+Features:
+- Supports MySQL, PostgreSQL, and SQLite
+- Automatic gzip compression
+- Keeps last 7 backups by default
+- Stored in `storage/backups/database/`
+
+#### `rover:db:backups`
+List all available database backups.
+
+```bash
+vendor/bin/robo rover:db:backups
+```
+
+Shows filename, size, and creation date for each backup.
+
+#### `rover:db:restore`
+Restore database from a backup.
+
+```bash
+vendor/bin/robo rover:db:restore           # Interactive selection
+vendor/bin/robo rover:db:restore 1         # Restore backup #1
+vendor/bin/robo rover:db:restore backup.sql.gz  # Specific file
+vendor/bin/robo rover:db:restore --force   # Skip confirmation
+```
+
+⚠️ **Warning**: This replaces your current database!
+
+#### `rover:db:backup:clean`
+Delete old backups, keeping the most recent ones.
+
+```bash
+vendor/bin/robo rover:db:backup:clean              # Keep 7 backups
+vendor/bin/robo rover:db:backup:clean --keep=10    # Keep 10 backups
+```
+
+#### `rover:db:snapshot`
+Quick snapshot for testing (uses "latest" naming).
+
+```bash
+vendor/bin/robo rover:db:snapshot              # Create snapshot
+vendor/bin/robo rover:db:snapshot:restore      # Restore snapshot
+```
+
+Perfect for:
+- Testing destructive operations
+- Quick before/after comparisons
+- Experimenting with data
+
+#### `rover:db:anonymize`
+Anonymize sensitive user data for safe development/staging use.
+
+```bash
+vendor/bin/robo rover:db:anonymize
+```
+
+Anonymizes:
+- Email addresses (user1@example.com, user2@example.com)
+- Passwords (set to default hash)
+- Names (User 1, User 2)
+- Tokens cleared
+
+⚠️ **Production Safety**: Automatically blocked in production environments.
+
+#### `rover:db:sync`
+Sync database from remote environment (requires configuration).
+
+```bash
+vendor/bin/robo rover:db:sync staging
+vendor/bin/robo rover:db:sync production --anonymize
+```
+
+Provides manual instructions for database synchronization.
+
+---
+
+### Migration Safety Tools
+
+#### `rover:migrate:check`
+Check for migration conflicts (duplicate timestamps, naming issues).
+
+```bash
+vendor/bin/robo rover:migrate:check
+```
+
+Detects:
+- Duplicate migration timestamps
+- Naming conflicts
+- Potential merge issues
+
+#### `rover:migrate:verify`
+Comprehensive migration verification before running.
+
+```bash
+vendor/bin/robo rover:migrate:verify
+```
+
+Checks for:
+- Migration conflicts
+- Risky operations (dropping columns/tables)
+- Safety concerns
+
+#### `rover:migrate:rollback-safe`
+Safe rollback with preview and confirmation.
+
+```bash
+vendor/bin/robo rover:migrate:rollback-safe --step=1
+vendor/bin/robo rover:migrate:rollback-safe --step=3 --force
+```
+
+Features:
+- Shows migrations to be rolled back
+- Requires confirmation (unless --force)
+- Blocks production rollbacks
+
+#### `rover:migrate:history`
+View migration history and pending migrations.
+
+```bash
+vendor/bin/robo rover:migrate:history
+```
+
+#### `rover:make:migration`
+Create migration with conflict checking.
+
+```bash
+vendor/bin/robo rover:make:migration create_posts_table --create=posts
+vendor/bin/robo rover:make:migration add_status_to_users --table=users
+```
+
+Automatically checks for naming conflicts before creation.
 
 ---
 
@@ -691,6 +838,34 @@ vendor/bin/robo rover:insights:dependencies
 
 # Compare Laravel versions
 vendor/bin/robo rover:workspace:versions
+
+# Create weekly backups
+vendor/bin/robo rover:db:backup --name=weekly
+vendor/bin/robo rover:db:backup:clean --keep=4  # Keep 4 weekly backups
+```
+
+### Database Operations & Safety
+```bash
+# Before risky operations - create snapshot
+vendor/bin/robo rover:db:snapshot
+
+# Test the risky operation
+php artisan some:risky:command
+
+# If something goes wrong, restore immediately
+vendor/bin/robo rover:db:snapshot:restore
+
+# Before deployment - backup and verify migrations
+vendor/bin/robo rover:db:backup --name=before-deploy
+vendor/bin/robo rover:migrate:verify
+vendor/bin/robo rover:migrate:check
+
+# After pulling production data - anonymize for safety
+vendor/bin/robo rover:db:sync production
+vendor/bin/robo rover:db:anonymize
+
+# Safe migration rollback
+vendor/bin/robo rover:migrate:rollback-safe --step=1
 ```
 
 ## Aliases
