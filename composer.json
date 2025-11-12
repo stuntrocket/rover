@@ -59,6 +59,12 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "format": "vendor/bin/pint",
-        "analyse": "vendor/bin/phpstan analyse"
+        "analyse": "vendor/bin/phpstan analyse",
+        "post-install-cmd": [
+            "Rover\\Installer::postInstall"
+        ],
+        "post-update-cmd": [
+            "Rover\\Installer::postUpdate"
+        ]
     }
 }
