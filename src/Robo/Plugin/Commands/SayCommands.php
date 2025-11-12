@@ -16,7 +16,7 @@ class SayCommands extends BaseCommand
      * @command rover:say
      * @param string $message The message to display
      */
-    public function sayMessage(string $message): Result
+    public function sayMessage(string $message): Result|ResultData
     {
         $this->say($message);
         return new ResultData(0, "");

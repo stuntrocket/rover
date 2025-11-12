@@ -18,7 +18,7 @@ class QualityCommands extends BaseCommand
      * @option $test Run in test mode (don't fix, just report)
      * @option $dirty Only lint uncommitted changes
      */
-    public function lint(array $options = ['test' => false, 'dirty' => false]): Result
+    public function lint(array $options = ['test' => false, 'dirty' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -67,7 +67,7 @@ class QualityCommands extends BaseCommand
      * @command rover:fix
      * @aliases fix
      */
-    public function fix(): Result
+    public function fix(): Result|ResultData
     {
         return $this->lint(['test' => false]);
     }
@@ -78,7 +78,7 @@ class QualityCommands extends BaseCommand
      * @command rover:check
      * @aliases check
      */
-    public function check(): Result
+    public function check(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -141,7 +141,7 @@ class QualityCommands extends BaseCommand
      * @command rover:analyze
      * @aliases analyze
      */
-    public function analyze(): Result
+    public function analyze(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -169,7 +169,7 @@ class QualityCommands extends BaseCommand
      *
      * @command rover:ide-helper
      */
-    public function ideHelper(): Result
+    public function ideHelper(): Result|ResultData
     {
         $this->requireLaravelProject();
 

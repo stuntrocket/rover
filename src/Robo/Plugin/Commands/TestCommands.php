@@ -27,7 +27,7 @@ class TestCommands extends BaseCommand
         'group' => null,
         'coverage' => false,
         'parallel' => false
-    ]): Result
+    ]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -48,7 +48,7 @@ class TestCommands extends BaseCommand
      * @param array $options
      * @return Result
      */
-    protected function runPest(array $options): Result
+    protected function runPest(array $options): Result|ResultData
     {
         $this->info('Running tests with Pest...');
 
@@ -91,7 +91,7 @@ class TestCommands extends BaseCommand
      * @param array $options
      * @return Result
      */
-    protected function runPhpUnit(array $options): Result
+    protected function runPhpUnit(array $options): Result|ResultData
     {
         $this->info('Running tests with PHPUnit...');
 
@@ -130,7 +130,7 @@ class TestCommands extends BaseCommand
      * @command rover:coverage
      * @aliases coverage
      */
-    public function coverage(): Result
+    public function coverage(): Result|ResultData
     {
         return $this->test(['coverage' => true]);
     }
@@ -141,7 +141,7 @@ class TestCommands extends BaseCommand
      * @command rover:test:file
      * @param string $file Path to test file
      */
-    public function testFile(string $file): Result
+    public function testFile(string $file): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -175,7 +175,7 @@ class TestCommands extends BaseCommand
      *
      * @command rover:test:list
      */
-    public function listTests(): Result
+    public function listTests(): Result|ResultData
     {
         $this->requireLaravelProject();
 

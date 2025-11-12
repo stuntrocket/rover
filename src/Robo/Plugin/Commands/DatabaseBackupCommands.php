@@ -17,7 +17,7 @@ class DatabaseBackupCommands extends BaseCommand
      * @option $name Custom name for backup (defaults to timestamp)
      * @option $compress Compress backup with gzip
      */
-    public function backup(array $options = ['name' => null, 'compress' => true]): Result
+    public function backup(array $options = ['name' => null, 'compress' => true]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -75,7 +75,7 @@ class DatabaseBackupCommands extends BaseCommand
      *
      * @command rover:db:backups
      */
-    public function listBackups(): Result
+    public function listBackups(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -122,7 +122,7 @@ class DatabaseBackupCommands extends BaseCommand
      * @param string|null $backup Backup filename or number from list
      * @option $force Skip confirmation prompt
      */
-    public function restore(?string $backup = null, array $options = ['force' => false]): Result
+    public function restore(?string $backup = null, array $options = ['force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -218,7 +218,7 @@ class DatabaseBackupCommands extends BaseCommand
      * @option $keep Number of backups to keep (default: 7)
      * @option $force Skip confirmation
      */
-    public function cleanBackups(array $options = ['keep' => 7, 'force' => false]): Result
+    public function cleanBackups(array $options = ['keep' => 7, 'force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -275,7 +275,7 @@ class DatabaseBackupCommands extends BaseCommand
      * @param bool $compress
      * @return Result
      */
-    protected function createBackup(array $config, string $backupPath, bool $compress): Result
+    protected function createBackup(array $config, string $backupPath, bool $compress): Result|ResultData
     {
         $connection = $config['connection'] ?? 'mysql';
 
@@ -299,7 +299,7 @@ class DatabaseBackupCommands extends BaseCommand
     /**
      * Backup MySQL database
      */
-    protected function backupMySQL(array $config, string $backupPath, bool $compress): Result
+    protected function backupMySQL(array $config, string $backupPath, bool $compress): Result|ResultData
     {
         $command = sprintf(
             'mysqldump -h%s -P%s -u%s %s %s',
@@ -322,7 +322,7 @@ class DatabaseBackupCommands extends BaseCommand
     /**
      * Backup PostgreSQL database
      */
-    protected function backupPostgreSQL(array $config, string $backupPath, bool $compress): Result
+    protected function backupPostgreSQL(array $config, string $backupPath, bool $compress): Result|ResultData
     {
         $command = sprintf(
             'PGPASSWORD=%s pg_dump -h %s -p %s -U %s %s',
@@ -345,7 +345,7 @@ class DatabaseBackupCommands extends BaseCommand
     /**
      * Backup SQLite database
      */
-    protected function backupSQLite(array $config, string $backupPath, bool $compress): Result
+    protected function backupSQLite(array $config, string $backupPath, bool $compress): Result|ResultData
     {
         $dbPath = $config['database'];
 
@@ -365,7 +365,7 @@ class DatabaseBackupCommands extends BaseCommand
     /**
      * Restore database from backup
      */
-    protected function restoreBackup(array $config, string $backupPath): Result
+    protected function restoreBackup(array $config, string $backupPath): Result|ResultData
     {
         $connection = $config['connection'] ?? 'mysql';
         $isCompressed = str_ends_with($backupPath, '.gz');
@@ -390,7 +390,7 @@ class DatabaseBackupCommands extends BaseCommand
     /**
      * Restore MySQL database
      */
-    protected function restoreMySQL(array $config, string $backupPath, bool $isCompressed): Result
+    protected function restoreMySQL(array $config, string $backupPath, bool $isCompressed): Result|ResultData
     {
         $decompressCmd = $isCompressed ? 'gunzip -c ' . escapeshellarg($backupPath) . ' | ' : 'cat ' . escapeshellarg($backupPath) . ' | ';
 
@@ -409,7 +409,7 @@ class DatabaseBackupCommands extends BaseCommand
     /**
      * Restore PostgreSQL database
      */
-    protected function restorePostgreSQL(array $config, string $backupPath, bool $isCompressed): Result
+    protected function restorePostgreSQL(array $config, string $backupPath, bool $isCompressed): Result|ResultData
     {
         $decompressCmd = $isCompressed ? 'gunzip -c ' . escapeshellarg($backupPath) . ' | ' : 'cat ' . escapeshellarg($backupPath) . ' | ';
 
@@ -428,7 +428,7 @@ class DatabaseBackupCommands extends BaseCommand
     /**
      * Restore SQLite database
      */
-    protected function restoreSQLite(array $config, string $backupPath, bool $isCompressed): Result
+    protected function restoreSQLite(array $config, string $backupPath, bool $isCompressed): Result|ResultData
     {
         $dbPath = $config['database'];
 

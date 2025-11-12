@@ -16,7 +16,7 @@ class ScheduleCommands extends BaseCommand
      * @command rover:schedule:list
      * @aliases schedule:list
      */
-    public function listSchedule(): Result
+    public function listSchedule(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -31,7 +31,7 @@ class ScheduleCommands extends BaseCommand
      *
      * @command rover:schedule:run
      */
-    public function runSchedule(): Result
+    public function runSchedule(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -47,7 +47,7 @@ class ScheduleCommands extends BaseCommand
      * @command rover:schedule:test
      * @param string|null $command Specific command to test
      */
-    public function testSchedule(?string $command = null): Result
+    public function testSchedule(?string $command = null): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -72,7 +72,7 @@ class ScheduleCommands extends BaseCommand
      *
      * @command rover:schedule:work
      */
-    public function scheduleWork(): Result
+    public function scheduleWork(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -88,7 +88,7 @@ class ScheduleCommands extends BaseCommand
      *
      * @command rover:schedule:check
      */
-    public function checkSchedule(): Result
+    public function checkSchedule(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -146,7 +146,7 @@ class ScheduleCommands extends BaseCommand
      *
      * @command rover:schedule:docs
      */
-    public function generateDocs(): Result
+    public function generateDocs(): Result|ResultData
     {
         $this->requireLaravelProject();
 

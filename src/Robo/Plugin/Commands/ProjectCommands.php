@@ -348,7 +348,7 @@ GITIGNORE;
      * @command rover:setup
      * @aliases setup
      */
-    public function setupExisting(): Result
+    public function setupExisting(): Result|ResultData
     {
         $this->requireLaravelProject();
 

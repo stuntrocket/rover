@@ -15,7 +15,7 @@ class MigrationCommands extends BaseCommand
      *
      * @command rover:migrate:check
      */
-    public function check(): Result
+    public function check(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -91,7 +91,7 @@ class MigrationCommands extends BaseCommand
      * @option $step Number of migrations to rollback
      * @option $force Skip confirmation
      */
-    public function rollbackSafe(array $options = ['step' => 1, 'force' => false]): Result
+    public function rollbackSafe(array $options = ['step' => 1, 'force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -139,7 +139,7 @@ class MigrationCommands extends BaseCommand
      *
      * @command rover:migrate:history
      */
-    public function history(): Result
+    public function history(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -180,7 +180,7 @@ class MigrationCommands extends BaseCommand
      *
      * @command rover:migrate:verify
      */
-    public function verify(): Result
+    public function verify(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -256,7 +256,7 @@ class MigrationCommands extends BaseCommand
      * @option $table The table to be created/modified
      * @option $create Create table migration
      */
-    public function makeMigration(string $name, array $options = ['table' => null, 'create' => null]): Result
+    public function makeMigration(string $name, array $options = ['table' => null, 'create' => null]): Result|ResultData
     {
         $this->requireLaravelProject();
 

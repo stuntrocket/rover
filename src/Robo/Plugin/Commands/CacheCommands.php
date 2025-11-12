@@ -18,7 +18,7 @@ class CacheCommands extends BaseCommand
      * @command rover:clear
      * @aliases clear
      */
-    public function clear(): Result
+    public function clear(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -77,7 +77,7 @@ class CacheCommands extends BaseCommand
      * @command rover:optimize
      * @aliases optimize
      */
-    public function optimize(): Result
+    public function optimize(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -137,7 +137,7 @@ class CacheCommands extends BaseCommand
      * @command rover:refresh
      * @aliases refresh
      */
-    public function refresh(): Result
+    public function refresh(): Result|ResultData
     {
         $this->requireLaravelProject();
 

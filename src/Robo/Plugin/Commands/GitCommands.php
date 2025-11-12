@@ -16,7 +16,7 @@ class GitCommands extends BaseCommand
      * @command rover:git:hooks
      * @aliases git:hooks
      */
-    public function installHooks(): Result
+    public function installHooks(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -187,7 +187,7 @@ BASH;
      *
      * @command rover:git:hooks:remove
      */
-    public function removeHooks(): Result
+    public function removeHooks(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -223,7 +223,7 @@ BASH;
      *
      * @command rover:git:status-all
      */
-    public function statusAll(): Result
+    public function statusAll(): Result|ResultData
     {
         $this->info('Checking git status for all projects...');
 
@@ -316,7 +316,7 @@ BASH;
      *
      * @command rover:git:gitignore
      */
-    public function createGitignore(): Result
+    public function createGitignore(): Result|ResultData
     {
         $this->requireLaravelProject();
 

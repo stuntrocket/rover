@@ -17,7 +17,7 @@ class PackageCommands extends BaseCommand
      * @param string $name Package name (vendor/package)
      * @option $path Path where package will be created
      */
-    public function init(string $name, array $options = ['path' => 'packages']): Result
+    public function init(string $name, array $options = ['path' => 'packages']): Result|ResultData
     {
         // Parse vendor and package name
         if (!str_contains($name, '/')) {
@@ -68,7 +68,7 @@ class PackageCommands extends BaseCommand
      * @command rover:package:link
      * @param string|null $packagePath Path to package
      */
-    public function link(?string $packagePath = null): Result
+    public function link(?string $packagePath = null): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -138,7 +138,7 @@ class PackageCommands extends BaseCommand
      * @command rover:package:unlink
      * @param string $packageName Package name (vendor/package)
      */
-    public function unlink(string $packageName): Result
+    public function unlink(string $packageName): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -188,7 +188,7 @@ class PackageCommands extends BaseCommand
      * @command rover:package:test
      * @param string|null $packagePath Path to package
      */
-    public function testPackage(?string $packagePath = null): Result
+    public function testPackage(?string $packagePath = null): Result|ResultData
     {
         if (!$packagePath) {
             $packagePath = '.';
@@ -225,7 +225,7 @@ class PackageCommands extends BaseCommand
      * @command rover:package:publish
      * @param string|null $packagePath Path to package
      */
-    public function preparePublish(?string $packagePath = null): Result
+    public function preparePublish(?string $packagePath = null): Result|ResultData
     {
         if (!$packagePath) {
             $packagePath = '.';
@@ -331,7 +331,7 @@ class PackageCommands extends BaseCommand
      * @command rover:package:docs
      * @param string|null $packagePath Path to package
      */
-    public function generateDocs(?string $packagePath = null): Result
+    public function generateDocs(?string $packagePath = null): Result|ResultData
     {
         if (!$packagePath) {
             $packagePath = '.';

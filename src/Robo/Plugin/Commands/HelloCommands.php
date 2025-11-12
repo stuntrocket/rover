@@ -16,7 +16,7 @@ class HelloCommands extends BaseCommand
      * @command rover:hello
      * @param string $name The name to greet
      */
-    public function hello(string $name = 'World'): Result
+    public function hello(string $name = 'World'): Result|ResultData
     {
         $this->say("Hello, $name! 👋");
         $this->info('Rover is ready to help with your Laravel projects!');

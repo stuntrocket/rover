@@ -16,7 +16,7 @@ class BackupCommands extends BaseCommand
      * @command rover:list
      * @aliases list
      */
-    public function listProjects(): Result
+    public function listProjects(): Result|ResultData
     {
         $this->info('Scanning for Laravel projects...');
 

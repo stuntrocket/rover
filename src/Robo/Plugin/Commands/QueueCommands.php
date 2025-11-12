@@ -17,7 +17,7 @@ class QueueCommands extends BaseCommand
      * @aliases queue:monitor
      * @option $queue Queue name to monitor
      */
-    public function monitor(array $options = ['queue' => 'default']): Result
+    public function monitor(array $options = ['queue' => 'default']): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -64,7 +64,7 @@ class QueueCommands extends BaseCommand
      * @command rover:queue:clear
      * @option $force Skip confirmation
      */
-    public function clear(array $options = ['force' => false]): Result
+    public function clear(array $options = ['force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -98,7 +98,7 @@ class QueueCommands extends BaseCommand
      * @command rover:queue:retry-all
      * @option $queue Queue name
      */
-    public function retryAll(array $options = ['queue' => null]): Result
+    public function retryAll(array $options = ['queue' => null]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -125,7 +125,7 @@ class QueueCommands extends BaseCommand
      *
      * @command rover:queue:failed
      */
-    public function failed(): Result
+    public function failed(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -140,7 +140,7 @@ class QueueCommands extends BaseCommand
      *
      * @command rover:queue:restart
      */
-    public function restart(): Result
+    public function restart(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -163,7 +163,7 @@ class QueueCommands extends BaseCommand
      * @option $queue Queue name
      * @option $tries Number of times to attempt a job
      */
-    public function work(array $options = ['queue' => 'default', 'tries' => 3]): Result
+    public function work(array $options = ['queue' => 'default', 'tries' => 3]): Result|ResultData
     {
         $this->requireLaravelProject();
 

@@ -16,7 +16,7 @@ class EnvCommands extends BaseCommand
      * @command rover:env:validate
      * @aliases env:validate
      */
-    public function validate(): Result
+    public function validate(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -91,7 +91,7 @@ class EnvCommands extends BaseCommand
      * @command rover:env:generate
      * @option $force Overwrite existing .env file
      */
-    public function generate(array $options = ['force' => false]): Result
+    public function generate(array $options = ['force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -163,7 +163,7 @@ class EnvCommands extends BaseCommand
      *
      * @command rover:env:compare
      */
-    public function compare(): Result
+    public function compare(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -221,7 +221,7 @@ class EnvCommands extends BaseCommand
      *
      * @command rover:env:info
      */
-    public function envInfo(): Result
+    public function envInfo(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -319,7 +319,7 @@ class EnvCommands extends BaseCommand
      *
      * @command rover:env:check-secrets
      */
-    public function checkSecrets(): Result
+    public function checkSecrets(): Result|ResultData
     {
         $this->requireLaravelProject();
 
