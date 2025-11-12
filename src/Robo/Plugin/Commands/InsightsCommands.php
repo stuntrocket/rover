@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Project insights and analytics commands
@@ -21,7 +22,7 @@ class InsightsCommands extends BaseCommand
 
         if (!file_exists("$targetDir/artisan")) {
             $this->error('Not a Laravel project');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $originalDir = getcwd();
@@ -115,7 +116,7 @@ class InsightsCommands extends BaseCommand
             chdir($originalDir);
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -129,7 +130,7 @@ class InsightsCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Analyzing dependencies across projects...');
@@ -174,7 +175,7 @@ class InsightsCommands extends BaseCommand
             $this->info('Consider standardizing package versions across projects.');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -188,7 +189,7 @@ class InsightsCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Running security audit on ' . count($projects) . ' project(s)...');
@@ -233,7 +234,7 @@ class InsightsCommands extends BaseCommand
             $this->info("Run 'composer update' to fix vulnerabilities.");
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -247,7 +248,7 @@ class InsightsCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Checking for outdated packages...');
@@ -294,7 +295,7 @@ class InsightsCommands extends BaseCommand
             $this->info("Run 'rover:update-all' to update all projects");
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -308,7 +309,7 @@ class InsightsCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->error('No Laravel projects found');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Generating Workspace Report');
@@ -372,7 +373,7 @@ class InsightsCommands extends BaseCommand
 
         $this->say('═══════════════════════════════════════════════════════');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**

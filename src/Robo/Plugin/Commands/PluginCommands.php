@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 use Rover\Plugin\PluginManager;
 
 /**
@@ -32,7 +33,7 @@ class PluginCommands extends BaseCommand
 
         if (empty($plugins)) {
             $this->io()->note('No plugins found');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $rows = [];
@@ -60,7 +61,7 @@ class PluginCommands extends BaseCommand
             'Loaded: ' . count($pluginManager->getLoadedPlugins()),
         ]);
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -77,7 +78,7 @@ class PluginCommands extends BaseCommand
 
         if (!$plugin) {
             $this->io()->error("Plugin not found: $name");
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $metadata = $plugin['metadata'];
@@ -117,7 +118,7 @@ class PluginCommands extends BaseCommand
             }
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -143,7 +144,7 @@ class PluginCommands extends BaseCommand
 
         if (file_exists($pluginPath)) {
             $this->io()->error("Plugin directory already exists: $pluginPath");
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->io()->title("Creating plugin: $name");
@@ -158,7 +159,7 @@ class PluginCommands extends BaseCommand
         foreach ($directories as $dir) {
             if (!mkdir($dir, 0755, true)) {
                 $this->io()->error("Failed to create directory: $dir");
-                return Result::error($this);
+                return new ResultData(1, "");
             }
         }
 
@@ -186,7 +187,7 @@ class PluginCommands extends BaseCommand
             '4. Run: rover plugin:validate ' . $name,
         ]);
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -202,7 +203,7 @@ class PluginCommands extends BaseCommand
 
         if (!$pluginManager->getPlugin($name)) {
             $this->io()->error("Plugin not found: $name");
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         if ($pluginManager->enablePlugin($name)) {
@@ -213,11 +214,11 @@ class PluginCommands extends BaseCommand
                 $this->io()->note("Plugin loaded successfully");
             }
 
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->io()->error("Failed to enable plugin: $name");
-        return Result::error($this);
+        return new ResultData(1, "");
     }
 
     /**
@@ -233,17 +234,17 @@ class PluginCommands extends BaseCommand
 
         if (!$pluginManager->getPlugin($name)) {
             $this->io()->error("Plugin not found: $name");
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         if ($pluginManager->disablePlugin($name)) {
             $this->io()->success("Plugin disabled: $name");
             $this->io()->note("Restart Rover to unload the plugin");
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->io()->error("Failed to disable plugin: $name");
-        return Result::error($this);
+        return new ResultData(1, "");
     }
 
     /**
@@ -265,7 +266,7 @@ class PluginCommands extends BaseCommand
 
         if (!is_dir($path)) {
             $this->io()->error("Plugin directory not found: $path");
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->io()->title("Validating plugin: $name");
@@ -274,7 +275,7 @@ class PluginCommands extends BaseCommand
 
         if (empty($errors)) {
             $this->io()->success("Plugin validation passed!");
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->io()->error("Plugin validation failed:");
@@ -282,7 +283,7 @@ class PluginCommands extends BaseCommand
             $this->io()->writeln("  • $error");
         }
 
-        return Result::error($this);
+        return new ResultData(1, "");
     }
 
     /**
@@ -309,7 +310,7 @@ class PluginCommands extends BaseCommand
             'Example: $this->registerHook(\'before_command\', function($data) { ... });',
         ]);
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -421,6 +422,7 @@ PHP;
 
 use Rover\Robo\Plugin\Commands\BaseCommand;
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Custom commands for {$className}

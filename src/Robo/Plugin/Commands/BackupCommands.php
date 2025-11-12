@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Backup and project listing commands
@@ -23,7 +24,7 @@ class BackupCommands extends BaseCommand
 
         if (empty($projects)) {
             $this->warning('No Laravel projects found in current directory.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->say("\nFound " . count($projects) . " Laravel project(s):\n");
@@ -43,7 +44,7 @@ class BackupCommands extends BaseCommand
         }
 
         $this->say('');
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**

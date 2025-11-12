@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Data management and anonymization commands
@@ -38,10 +39,10 @@ class DataCommands extends BaseCommand
         if ($result->wasSuccessful()) {
             $this->success('✓ Snapshot created!');
             $this->info('Restore with: rover:db:snapshot:restore');
-            return Result::success($this);
+            return new ResultData(0, "");
         } else {
             $this->error('Snapshot failed!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 
@@ -61,7 +62,7 @@ class DataCommands extends BaseCommand
 
         if (!file_exists($snapshotPath)) {
             $this->error('No snapshot found! Create one with: rover:db:snapshot');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         if (!$options['force']) {
@@ -77,10 +78,10 @@ class DataCommands extends BaseCommand
 
         if ($result->wasSuccessful()) {
             $this->success('✓ Snapshot restored!');
-            return Result::success($this);
+            return new ResultData(0, "");
         } else {
             $this->error('Restore failed!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 
@@ -98,7 +99,7 @@ class DataCommands extends BaseCommand
         if (!$this->isLocalEnvironment() && !$options['force']) {
             $this->error('Cannot anonymize in production environment!');
             $this->warning('Use --force only if you are absolutely certain.');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         if (!$options['force']) {
@@ -121,10 +122,10 @@ class DataCommands extends BaseCommand
         if ($result->wasSuccessful()) {
             $this->success('✓ Data anonymized successfully!');
             $this->info('Users now have generic emails like user1@example.com');
-            return Result::success($this);
+            return new ResultData(0, "");
         } else {
             $this->error('Anonymization failed!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 
@@ -141,13 +142,13 @@ class DataCommands extends BaseCommand
 
         if (!in_array($environment, ['staging', 'production'])) {
             $this->error('Invalid environment. Use: staging or production');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Safety check
         if (!$this->isLocalEnvironment()) {
             $this->error('Can only sync TO local environment!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->warning("This will replace your local database with data from $environment!");
@@ -180,7 +181,7 @@ class DataCommands extends BaseCommand
             $this->say("  vendor/bin/robo rover:db:anonymize");
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -253,7 +254,7 @@ class DataCommands extends BaseCommand
         }
 
         $this->error("Unsupported database: $connection");
-        return Result::error($this);
+        return new ResultData(1, "");
     }
 
     /**
@@ -278,7 +279,7 @@ class DataCommands extends BaseCommand
         }
 
         $this->error("Unsupported database: $connection");
-        return Result::error($this);
+        return new ResultData(1, "");
     }
 
     /**

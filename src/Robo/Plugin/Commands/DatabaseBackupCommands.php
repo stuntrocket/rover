@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Database backup and restore commands
@@ -22,7 +23,7 @@ class DatabaseBackupCommands extends BaseCommand
 
         if (!file_exists('.env')) {
             $this->error('.env file not found!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Creating database backup...');
@@ -32,7 +33,7 @@ class DatabaseBackupCommands extends BaseCommand
 
         if (!$dbConfig) {
             $this->error('Could not read database configuration from .env');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Create backup directory
@@ -62,10 +63,10 @@ class DatabaseBackupCommands extends BaseCommand
             // Rotate old backups
             $this->rotateBackups($backupDir);
 
-            return Result::success($this);
+            return new ResultData(0, "");
         } else {
             $this->error('Backup failed!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 
@@ -82,14 +83,14 @@ class DatabaseBackupCommands extends BaseCommand
 
         if (!is_dir($backupDir)) {
             $this->warning('No backups found. Run rover:db:backup to create one.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $backups = glob("$backupDir/*.sql*");
 
         if (empty($backups)) {
             $this->warning('No backups found.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         // Sort by modification time (newest first)
@@ -111,7 +112,7 @@ class DatabaseBackupCommands extends BaseCommand
             $this->say('');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -129,14 +130,14 @@ class DatabaseBackupCommands extends BaseCommand
 
         if (!is_dir($backupDir)) {
             $this->error('No backups directory found!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $backups = glob("$backupDir/*.sql*");
 
         if (empty($backups)) {
             $this->error('No backups found!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Sort by modification time (newest first)
@@ -159,7 +160,7 @@ class DatabaseBackupCommands extends BaseCommand
 
             if (!isset($backups[$index])) {
                 $this->error('Invalid selection');
-                return Result::error($this);
+                return new ResultData(1, "");
             }
 
             $backupPath = $backups[$index];
@@ -168,7 +169,7 @@ class DatabaseBackupCommands extends BaseCommand
             $index = (int)$backup - 1;
             if (!isset($backups[$index])) {
                 $this->error('Invalid backup number');
-                return Result::error($this);
+                return new ResultData(1, "");
             }
             $backupPath = $backups[$index];
         } else {
@@ -176,7 +177,7 @@ class DatabaseBackupCommands extends BaseCommand
             $backupPath = "$backupDir/$backup";
             if (!file_exists($backupPath)) {
                 $this->error("Backup not found: $backup");
-                return Result::error($this);
+                return new ResultData(1, "");
             }
         }
 
@@ -195,7 +196,7 @@ class DatabaseBackupCommands extends BaseCommand
 
         if (!$dbConfig) {
             $this->error('Could not read database configuration');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Restore backup
@@ -203,10 +204,10 @@ class DatabaseBackupCommands extends BaseCommand
 
         if ($result->wasSuccessful()) {
             $this->success('✓ Database restored successfully!');
-            return Result::success($this);
+            return new ResultData(0, "");
         } else {
             $this->error('Restore failed!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 
@@ -225,14 +226,14 @@ class DatabaseBackupCommands extends BaseCommand
 
         if (!is_dir($backupDir)) {
             $this->info('No backups directory found.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $backups = glob("$backupDir/*.sql*");
 
         if (empty($backups)) {
             $this->info('No backups found.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         // Sort by modification time (oldest first)
@@ -245,7 +246,7 @@ class DatabaseBackupCommands extends BaseCommand
 
         if (empty($toDelete)) {
             $this->info('No backups to clean up.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->warning('Will delete ' . count($toDelete) . ' old backup(s)');
@@ -263,7 +264,7 @@ class DatabaseBackupCommands extends BaseCommand
 
         $this->success('✓ Cleanup complete. Kept ' . $keep . ' most recent backup(s).');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -291,7 +292,7 @@ class DatabaseBackupCommands extends BaseCommand
 
             default:
                 $this->error("Unsupported database connection: $connection");
-                return Result::error($this);
+                return new ResultData(1, "");
         }
     }
 
@@ -350,14 +351,14 @@ class DatabaseBackupCommands extends BaseCommand
 
         if (!file_exists($dbPath)) {
             $this->error("SQLite database not found: $dbPath");
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         if ($compress) {
             return $this->taskExec("gzip -c " . escapeshellarg($dbPath) . " > " . escapeshellarg($backupPath))->run();
         } else {
             copy($dbPath, $backupPath);
-            return Result::success($this);
+            return new ResultData(0, "");
         }
     }
 
@@ -382,7 +383,7 @@ class DatabaseBackupCommands extends BaseCommand
 
             default:
                 $this->error("Unsupported database connection: $connection");
-                return Result::error($this);
+                return new ResultData(1, "");
         }
     }
 
@@ -435,7 +436,7 @@ class DatabaseBackupCommands extends BaseCommand
             return $this->taskExec("gunzip -c " . escapeshellarg($backupPath) . " > " . escapeshellarg($dbPath))->run();
         } else {
             copy($backupPath, $dbPath);
-            return Result::success($this);
+            return new ResultData(0, "");
         }
     }
 

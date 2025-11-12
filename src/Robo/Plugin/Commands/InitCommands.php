@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 use Rover\Config\Config;
 
 /**
@@ -37,7 +38,7 @@ class InitCommands extends BaseCommand
             $this->info('Edit rover.yml to customize settings for your team.');
         } else {
             $this->error('Failed to create rover.yml');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Check if this is a Laravel project
@@ -62,7 +63,7 @@ class InitCommands extends BaseCommand
         $this->success("\nRover is ready to use!");
         $this->info("Try running: rover:test, rover:lint, rover:fresh");
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -163,7 +164,7 @@ class InitCommands extends BaseCommand
             }
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -197,6 +198,6 @@ class InitCommands extends BaseCommand
         $this->say('  Run "vendor/bin/robo list" for all commands');
         $this->say('');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 }

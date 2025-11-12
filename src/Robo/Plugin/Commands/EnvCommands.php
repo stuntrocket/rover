@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Environment file management commands
@@ -22,7 +23,7 @@ class EnvCommands extends BaseCommand
         if (!file_exists('.env')) {
             $this->error('.env file not found!');
             $this->info('Run: cp .env.example .env');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Validating environment configuration...');
@@ -74,13 +75,13 @@ class EnvCommands extends BaseCommand
         // Display results
         if (empty($issues)) {
             $this->success("\n✓ Environment configuration is valid!");
-            return Result::success($this);
+            return new ResultData(0, "");
         } else {
             $this->error("\n✗ Environment validation failed:");
             foreach ($issues as $issue) {
                 $this->say("  • $issue");
             }
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 
@@ -97,12 +98,12 @@ class EnvCommands extends BaseCommand
         if (file_exists('.env') && !$options['force']) {
             $this->error('.env file already exists!');
             $this->info('Use --force to overwrite');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         if (!file_exists('.env.example')) {
             $this->error('.env.example file not found!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Generating .env file...');
@@ -154,7 +155,7 @@ class EnvCommands extends BaseCommand
         $this->success('✓ .env file generated successfully!');
         $this->info("\nRun: vendor/bin/robo rover:env:validate to test your configuration");
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -168,7 +169,7 @@ class EnvCommands extends BaseCommand
 
         if (!file_exists('.env.example')) {
             $this->error('.env.example not found!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Comparing .env with .env.example...');
@@ -195,7 +196,7 @@ class EnvCommands extends BaseCommand
 
         if (empty($missing) && empty($extra)) {
             $this->success('✓ .env matches .env.example');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         if (!empty($missing)) {
@@ -212,7 +213,7 @@ class EnvCommands extends BaseCommand
             }
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -226,7 +227,7 @@ class EnvCommands extends BaseCommand
 
         if (!file_exists('.env')) {
             $this->error('.env file not found!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $env = $this->parseEnvFile('.env');
@@ -259,7 +260,7 @@ class EnvCommands extends BaseCommand
         $this->say('');
         $this->info('(Sensitive values like passwords are hidden)');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -355,7 +356,7 @@ class EnvCommands extends BaseCommand
 
         if (empty($warnings)) {
             $this->success('✓ No exposed secrets detected');
-            return Result::success($this);
+            return new ResultData(0, "");
         } else {
             $this->warning('⚠ Potential security issues found:');
             foreach ($warnings as $warning) {
@@ -367,7 +368,7 @@ class EnvCommands extends BaseCommand
                 $this->info("Run: git rm --cached .env");
             }
 
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 }

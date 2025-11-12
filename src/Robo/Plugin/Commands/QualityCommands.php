@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Code quality commands for Laravel projects
@@ -24,7 +25,7 @@ class QualityCommands extends BaseCommand
         if (!$this->hasPackage('laravel/pint')) {
             $this->error('Laravel Pint is not installed!');
             $this->info('Install it with: composer require laravel/pint --dev');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Running Laravel Pint...');
@@ -127,10 +128,10 @@ class QualityCommands extends BaseCommand
         // Final result
         if ($allPassed) {
             $this->success("\n✓ All checks passed!");
-            return Result::success($this);
+            return new ResultData(0, "");
         } else {
             $this->error("\n✗ Some checks failed. Please fix the issues before committing.");
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 
@@ -147,7 +148,7 @@ class QualityCommands extends BaseCommand
         if (!$this->hasPackage('phpstan/phpstan') && !$this->hasPackage('nunomaduro/larastan')) {
             $this->error('PHPStan or Larastan is not installed!');
             $this->info('Install Larastan with: composer require nunomaduro/larastan --dev');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Running static analysis...');
@@ -175,7 +176,7 @@ class QualityCommands extends BaseCommand
         if (!$this->hasPackage('barryvdh/laravel-ide-helper')) {
             $this->error('Laravel IDE Helper is not installed!');
             $this->info('Install it with: composer require barryvdh/laravel-ide-helper --dev');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Generating IDE helper files...');
@@ -193,6 +194,6 @@ class QualityCommands extends BaseCommand
         $this->artisan('ide-helper:meta');
 
         $this->success('IDE helper files generated!');
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 }

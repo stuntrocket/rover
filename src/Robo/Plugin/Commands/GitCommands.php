@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Git integration and hooks management
@@ -22,7 +23,7 @@ class GitCommands extends BaseCommand
         if (!is_dir('.git')) {
             $this->error('Not a git repository!');
             $this->info('Run: git init');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Installing git hooks...');
@@ -51,7 +52,7 @@ class GitCommands extends BaseCommand
             $this->warning('No hooks were installed');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -192,7 +193,7 @@ BASH;
 
         if (!is_dir('.git')) {
             $this->error('Not a git repository!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Removing git hooks...');
@@ -214,7 +215,7 @@ BASH;
             $this->info('No hooks to remove');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -230,7 +231,7 @@ BASH;
 
         if (empty($projects)) {
             $this->warning('No Laravel projects found');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->say('');
@@ -275,7 +276,7 @@ BASH;
             $this->say('');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -357,6 +358,6 @@ GITIGNORE;
         file_put_contents('.gitignore', $gitignore);
         $this->success('✓ .gitignore created');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 }

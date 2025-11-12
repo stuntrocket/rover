@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Queue management and monitoring commands
@@ -30,7 +31,7 @@ class QueueCommands extends BaseCommand
             $this->warning('Queue tables may not be set up.');
             $this->info('Run: php artisan queue:table');
             $this->info('Then: php artisan migrate');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Show queue stats
@@ -54,7 +55,7 @@ class QueueCommands extends BaseCommand
             $this->say('  ' . count($lines) . ' worker(s) running');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -71,7 +72,7 @@ class QueueCommands extends BaseCommand
 
         if ($failedCount === 0) {
             $this->info('No failed jobs to clear.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->warning("Found $failedCount failed job(s)");
@@ -105,7 +106,7 @@ class QueueCommands extends BaseCommand
 
         if ($failedCount === 0) {
             $this->info('No failed jobs to retry.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->info("Retrying $failedCount failed job(s)...");

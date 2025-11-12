@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Project scaffolding and setup commands
@@ -34,7 +35,7 @@ class ProjectCommands extends BaseCommand
         if (is_dir($name) && !$options['force']) {
             $this->error("Directory '$name' already exists!");
             $this->info('Use --force to create anyway (this will overwrite files).');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         // Create Laravel project
@@ -45,7 +46,7 @@ class ProjectCommands extends BaseCommand
 
         if (!$result->wasSuccessful()) {
             $this->error('Failed to create Laravel project!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->success('Laravel installed!');
@@ -107,7 +108,7 @@ class ProjectCommands extends BaseCommand
             chdir($originalDir);
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -394,6 +395,6 @@ GITIGNORE;
         $this->say("  vendor/bin/robo rover:test     # Run tests");
         $this->say("  vendor/bin/robo rover:git:hooks # Install git hooks");
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 }

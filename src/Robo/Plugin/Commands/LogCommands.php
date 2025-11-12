@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Log viewing and management commands
@@ -33,7 +34,7 @@ class LogCommands extends BaseCommand
         if (!file_exists($logFile)) {
             $this->error('Log file not found: ' . $logFile);
             $this->info('No logs yet - application may not have been used.');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info('Laravel Logs:');
@@ -77,7 +78,7 @@ class LogCommands extends BaseCommand
 
         if (!file_exists($logFile)) {
             $this->info('No log file to clear.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $size = $this->formatBytes(filesize($logFile));
@@ -94,7 +95,7 @@ class LogCommands extends BaseCommand
 
         $this->success('✓ Log file cleared!');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -110,7 +111,7 @@ class LogCommands extends BaseCommand
 
         if (!file_exists($logFile)) {
             $this->warning('No log file found.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->info('Log Statistics:');
@@ -166,7 +167,7 @@ class LogCommands extends BaseCommand
             }
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -183,7 +184,7 @@ class LogCommands extends BaseCommand
 
         if (!file_exists($logFile)) {
             $this->warning('No log file found.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $this->info('Recent Errors:');
@@ -200,7 +201,7 @@ class LogCommands extends BaseCommand
             echo $errors;
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
@@ -216,7 +217,7 @@ class LogCommands extends BaseCommand
 
         if (!file_exists($logFile)) {
             $this->info('No log file to archive.');
-            return Result::success($this);
+            return new ResultData(0, "");
         }
 
         $archiveDir = 'storage/logs/archive';
@@ -237,7 +238,7 @@ class LogCommands extends BaseCommand
         $this->success("✓ Logs archived to: $archiveFile.gz");
         $this->info('Original log file cleared.');
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Rover\Robo\Plugin\Commands;
 
 use Robo\Result;
+use Robo\ResultData;
 
 /**
  * Testing commands for Laravel projects with smart Pest/PHPUnit detection
@@ -37,7 +38,7 @@ class TestCommands extends BaseCommand
             return $this->runPhpUnit($options);
         } else {
             $this->error('No test runner found! Please install Pest or PHPUnit.');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
     }
 
@@ -146,7 +147,7 @@ class TestCommands extends BaseCommand
 
         if (!file_exists($file)) {
             $this->error("Test file not found: $file");
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         $this->info("Running test file: $file");
@@ -157,7 +158,7 @@ class TestCommands extends BaseCommand
             $result = $this->taskExec("./vendor/bin/phpunit $file")->run();
         } else {
             $this->error('No test runner found!');
-            return Result::error($this);
+            return new ResultData(1, "");
         }
 
         if ($result->wasSuccessful()) {
@@ -199,7 +200,7 @@ class TestCommands extends BaseCommand
             $this->warning('No test directories found.');
         }
 
-        return Result::success($this);
+        return new ResultData(0, "");
     }
 
     /**
