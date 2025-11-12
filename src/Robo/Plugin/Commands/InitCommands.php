@@ -19,7 +19,7 @@ class InitCommands extends BaseCommand
      * @command rover:init
      * @aliases init
      */
-    public function init(): Result
+    public function init(): Result|ResultData
     {
         $this->info('Initializing Rover configuration...');
 
@@ -117,7 +117,7 @@ class InitCommands extends BaseCommand
      * @command rover:status
      * @aliases status
      */
-    public function status(): Result
+    public function status(): Result|ResultData
     {
         $this->info('Rover Status:');
         $this->say('');
@@ -173,7 +173,7 @@ class InitCommands extends BaseCommand
      * @command rover:about
      * @aliases about
      */
-    public function about(): Result
+    public function about(): Result|ResultData
     {
         $this->say('');
         $this->say('  ╭─────────────────────────────────────────╮');

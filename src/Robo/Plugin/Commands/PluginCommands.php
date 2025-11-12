@@ -19,7 +19,7 @@ class PluginCommands extends BaseCommand
      *
      * @option bool $loaded Show only loaded plugins
      */
-    public function list(array $options = ['loaded' => false]): Result
+    public function list(array $options = ['loaded' => false]): Result|ResultData
     {
         $pluginManager = PluginManager::getInstance();
 
@@ -71,7 +71,7 @@ class PluginCommands extends BaseCommand
      *
      * @param string $name Plugin name
      */
-    public function pluginInfo(string $name): Result
+    public function pluginInfo(string $name): Result|ResultData
     {
         $pluginManager = PluginManager::getInstance();
         $plugin = $pluginManager->getPlugin($name);
@@ -197,7 +197,7 @@ class PluginCommands extends BaseCommand
      *
      * @param string $name Plugin name
      */
-    public function enable(string $name): Result
+    public function enable(string $name): Result|ResultData
     {
         $pluginManager = PluginManager::getInstance();
 
@@ -228,7 +228,7 @@ class PluginCommands extends BaseCommand
      *
      * @param string $name Plugin name
      */
-    public function disable(string $name): Result
+    public function disable(string $name): Result|ResultData
     {
         $pluginManager = PluginManager::getInstance();
 
@@ -254,7 +254,7 @@ class PluginCommands extends BaseCommand
      *
      * @param string $name Plugin name or path
      */
-    public function validate(string $name): Result
+    public function validate(string $name): Result|ResultData
     {
         $pluginManager = PluginManager::getInstance();
 
@@ -291,7 +291,7 @@ class PluginCommands extends BaseCommand
      *
      * @command plugin:hooks
      */
-    public function hooks(): Result
+    public function hooks(): Result|ResultData
     {
         $pluginManager = PluginManager::getInstance();
         $hooks = $pluginManager->getAvailableHooks();
@@ -436,7 +436,7 @@ class {$className}Commands extends BaseCommand
      *
      * @param string \$name Name to greet
      */
-    public function hello(string \$name = 'World'): Result
+    public function hello(string \$name = 'World'): Result|ResultData
     {
         \$this->io()->success("Hello, \$name! This is a custom {$className} command.");
 
@@ -455,7 +455,7 @@ class {$className}Commands extends BaseCommand
      *
      * @command {$name}:status
      */
-    public function status(): Result
+    public function status(): Result|ResultData
     {
         \$this->io()->title('{$className} Plugin Status');
 

@@ -16,7 +16,7 @@ class InsightsCommands extends BaseCommand
      * @command rover:insights:stats
      * @param string|null $project Project name (defaults to current directory)
      */
-    public function stats(?string $project = null): Result
+    public function stats(?string $project = null): Result|ResultData
     {
         $targetDir = $project ?? '.';
 
@@ -124,7 +124,7 @@ class InsightsCommands extends BaseCommand
      *
      * @command rover:insights:dependencies
      */
-    public function dependencies(): Result
+    public function dependencies(): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 
@@ -183,7 +183,7 @@ class InsightsCommands extends BaseCommand
      *
      * @command rover:insights:security
      */
-    public function security(): Result
+    public function security(): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 
@@ -242,7 +242,7 @@ class InsightsCommands extends BaseCommand
      *
      * @command rover:insights:outdated
      */
-    public function outdated(): Result
+    public function outdated(): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 
@@ -303,7 +303,7 @@ class InsightsCommands extends BaseCommand
      *
      * @command rover:insights:report
      */
-    public function report(): Result
+    public function report(): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 

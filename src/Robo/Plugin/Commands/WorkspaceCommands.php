@@ -16,7 +16,7 @@ class WorkspaceCommands extends BaseCommand
      * @command rover:health
      * @aliases health
      */
-    public function health(): Result
+    public function health(): Result|ResultData
     {
         $this->info('Running health checks on all Laravel projects...');
 
@@ -123,7 +123,7 @@ class WorkspaceCommands extends BaseCommand
      * @aliases switch
      * @param string|null $project Project name to switch to
      */
-    public function switchProject(?string $project = null): Result
+    public function switchProject(?string $project = null): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 
@@ -177,7 +177,7 @@ class WorkspaceCommands extends BaseCommand
      *
      * @command rover:workspace:status
      */
-    public function workspaceStatus(): Result
+    public function workspaceStatus(): Result|ResultData
     {
         $this->info('Workspace Status Overview');
         $this->say('');
@@ -279,7 +279,7 @@ class WorkspaceCommands extends BaseCommand
      *
      * @command rover:workspace:versions
      */
-    public function compareVersions(): Result
+    public function compareVersions(): Result|ResultData
     {
         $this->info('Laravel versions across projects:');
         $this->say('');

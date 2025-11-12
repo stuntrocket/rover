@@ -17,7 +17,7 @@ class BatchCommands extends BaseCommand
      * @param string $command The command to run in each project
      * @option $continue Continue even if command fails in a project
      */
-    public function runAll(string $command, array $options = ['continue' => true]): Result
+    public function runAll(string $command, array $options = ['continue' => true]): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 
@@ -78,7 +78,7 @@ class BatchCommands extends BaseCommand
      * @option $dev Update dev dependencies only
      * @option $continue Continue even if update fails
      */
-    public function updateAll(array $options = ['dev' => false, 'continue' => true]): Result
+    public function updateAll(array $options = ['dev' => false, 'continue' => true]): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 
@@ -143,7 +143,7 @@ class BatchCommands extends BaseCommand
      * @command rover:test-all
      * @option $continue Continue even if tests fail
      */
-    public function testAll(array $options = ['continue' => true]): Result
+    public function testAll(array $options = ['continue' => true]): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 
@@ -218,7 +218,7 @@ class BatchCommands extends BaseCommand
      * @command rover:git:pull-all
      * @option $continue Continue even if pull fails
      */
-    public function gitPullAll(array $options = ['continue' => true]): Result
+    public function gitPullAll(array $options = ['continue' => true]): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 
@@ -291,7 +291,7 @@ class BatchCommands extends BaseCommand
      *
      * @command rover:clear-all
      */
-    public function clearAll(): Result
+    public function clearAll(): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 
@@ -332,7 +332,7 @@ class BatchCommands extends BaseCommand
      * @command rover:install-all
      * @option $continue Continue even if install fails
      */
-    public function installAll(array $options = ['continue' => true]): Result
+    public function installAll(array $options = ['continue' => true]): Result|ResultData
     {
         $projects = $this->findLaravelProjects('.');
 

@@ -16,7 +16,7 @@ class DataCommands extends BaseCommand
      * @command rover:db:snapshot
      * @aliases snapshot
      */
-    public function snapshot(): Result
+    public function snapshot(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -52,7 +52,7 @@ class DataCommands extends BaseCommand
      * @command rover:db:snapshot:restore
      * @option $force Skip confirmation
      */
-    public function snapshotRestore(array $options = ['force' => false]): Result
+    public function snapshotRestore(array $options = ['force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -91,7 +91,7 @@ class DataCommands extends BaseCommand
      * @command rover:db:anonymize
      * @option $force Skip confirmation
      */
-    public function anonymize(array $options = ['force' => false]): Result
+    public function anonymize(array $options = ['force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -136,7 +136,7 @@ class DataCommands extends BaseCommand
      * @param string $environment Environment to sync from (staging, production)
      * @option $anonymize Anonymize data after sync
      */
-    public function sync(string $environment, array $options = ['anonymize' => true]): Result
+    public function sync(string $environment, array $options = ['anonymize' => true]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -235,7 +235,7 @@ class DataCommands extends BaseCommand
     /**
      * Create backup helper (simplified version)
      */
-    protected function createBackup(array $config, string $backupPath, bool $compress): Result
+    protected function createBackup(array $config, string $backupPath, bool $compress): Result|ResultData
     {
         $connection = $config['connection'] ?? 'mysql';
 
@@ -260,7 +260,7 @@ class DataCommands extends BaseCommand
     /**
      * Restore backup helper
      */
-    protected function restoreBackup(array $config, string $backupPath): Result
+    protected function restoreBackup(array $config, string $backupPath): Result|ResultData
     {
         $connection = $config['connection'] ?? 'mysql';
 

@@ -25,7 +25,7 @@ class LogCommands extends BaseCommand
         'follow' => false,
         'level' => null,
         'grep' => null
-    ]): Result
+    ]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -70,7 +70,7 @@ class LogCommands extends BaseCommand
      * @command rover:logs:clear
      * @option $force Skip confirmation
      */
-    public function clearLogs(array $options = ['force' => false]): Result
+    public function clearLogs(array $options = ['force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -103,7 +103,7 @@ class LogCommands extends BaseCommand
      *
      * @command rover:logs:stats
      */
-    public function logStats(): Result
+    public function logStats(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -176,7 +176,7 @@ class LogCommands extends BaseCommand
      * @command rover:logs:errors
      * @option $lines Number of recent errors to show (default: 10)
      */
-    public function findErrors(array $options = ['lines' => 10]): Result
+    public function findErrors(array $options = ['lines' => 10]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -209,7 +209,7 @@ class LogCommands extends BaseCommand
      *
      * @command rover:logs:archive
      */
-    public function archiveLogs(): Result
+    public function archiveLogs(): Result|ResultData
     {
         $this->requireLaravelProject();
 

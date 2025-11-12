@@ -16,7 +16,7 @@ class PerformanceCommands extends BaseCommand
      * @command rover:profile
      * @param string|null $url URL or route to profile
      */
-    public function profile(?string $url = null): Result
+    public function profile(?string $url = null): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -89,7 +89,7 @@ class PerformanceCommands extends BaseCommand
      *
      * @command rover:n+1
      */
-    public function detectNPlusOne(): Result
+    public function detectNPlusOne(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -158,7 +158,7 @@ class PerformanceCommands extends BaseCommand
      *
      * @command rover:benchmark
      */
-    public function benchmark(): Result
+    public function benchmark(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -206,7 +206,7 @@ class PerformanceCommands extends BaseCommand
      *
      * @command rover:cache:warm
      */
-    public function warmCache(): Result
+    public function warmCache(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -240,7 +240,7 @@ class PerformanceCommands extends BaseCommand
      *
      * @command rover:metrics
      */
-    public function metrics(): Result
+    public function metrics(): Result|ResultData
     {
         $this->requireLaravelProject();
 

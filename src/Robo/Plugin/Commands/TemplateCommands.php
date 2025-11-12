@@ -15,7 +15,7 @@ class TemplateCommands extends BaseCommand
      *
      * @command rover:template:github-actions
      */
-    public function githubActions(): Result
+    public function githubActions(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -109,7 +109,7 @@ YAML;
      *
      * @command rover:template:gitlab-ci
      */
-    public function gitlabCi(): Result
+    public function gitlabCi(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -183,7 +183,7 @@ YAML;
      *
      * @command rover:template:docker
      */
-    public function docker(): Result
+    public function docker(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -364,7 +364,7 @@ IGNORE;
      *
      * @command rover:template:readme
      */
-    public function readme(): Result
+    public function readme(): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -496,7 +496,7 @@ README;
      *
      * @command rover:template:all
      */
-    public function all(): Result
+    public function all(): Result|ResultData
     {
         $this->requireLaravelProject();
 

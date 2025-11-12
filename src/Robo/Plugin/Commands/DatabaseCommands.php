@@ -20,7 +20,7 @@ class DatabaseCommands extends BaseCommand
      * @option $seed Run database seeders after migration
      * @option $force Force the operation without confirmation
      */
-    public function fresh(array $options = ['seed' => true, 'force' => false]): Result
+    public function fresh(array $options = ['seed' => true, 'force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -71,7 +71,7 @@ class DatabaseCommands extends BaseCommand
      * @option $seed Run database seeders after migration
      * @option $force Force the operation without confirmation
      */
-    public function reset(array $options = ['seed' => false, 'force' => false]): Result
+    public function reset(array $options = ['seed' => false, 'force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -122,7 +122,7 @@ class DatabaseCommands extends BaseCommand
      * @option $class The class name of the seeder
      * @option $force Force the operation without confirmation
      */
-    public function seed(array $options = ['class' => null, 'force' => false]): Result
+    public function seed(array $options = ['class' => null, 'force' => false]): Result|ResultData
     {
         $this->requireLaravelProject();
 
@@ -150,7 +150,7 @@ class DatabaseCommands extends BaseCommand
      *
      * @command rover:db:status
      */
-    public function status(): Result
+    public function status(): Result|ResultData
     {
         $this->requireLaravelProject();
 
