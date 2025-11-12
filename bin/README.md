@@ -6,9 +6,18 @@ This directory contains helper scripts to make using Rover easier in your Larave
 
 A convenient wrapper that automatically detects Laravel Sail and routes Rover commands appropriately.
 
-### Installation
+### Automatic Installation
 
-Copy this script to your Laravel project root:
+When you install or update Rover via Composer, the `rover` script is automatically copied to your project root. You'll see a message like:
+
+```
+Rover: CLI helper script installed successfully!
+You can now use: ./rover rover:about
+```
+
+### Manual Installation
+
+If you need to install or reinstall manually, copy this script to your Laravel project root:
 
 ```bash
 cp vendor/stuntrocket/rover/bin/rover ./rover
