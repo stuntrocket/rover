@@ -2,20 +2,24 @@
 
 namespace Rover\Robo\Plugin\Commands;
 
-use Robo\Symfony\ConsoleIO;
+use Robo\Result;
 
 /**
- * This is project's console commands configuration for Robo task runner.
- *
- * @see https://robo.li/
+ * Demo and example commands
  */
-class HelloCommands extends \Robo\Tasks
+class HelloCommands extends BaseCommand
 {
     /**
+     * Say hello to someone
+     *
      * @command rover:hello
+     * @param string $name The name to greet
      */
-    public function hello(ConsoleIO $io, $world)
+    public function hello(string $name = 'World'): Result
     {
-        $io->say("Hello, $world");
+        $this->say("Hello, $name! 👋");
+        $this->info('Rover is ready to help with your Laravel projects!');
+
+        return Result::success($this);
     }
 }
